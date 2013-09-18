@@ -2,15 +2,19 @@
 
 void Othello::mousebotton(int state ,int button, int cx,int cy){
 	if(  state != GLUT_DOWN ||  button != GLUT_LEFT_BUTTON  )return;
-	procedure();
+	if( ( mode==P2M && turn==BLACK ) || (mode==M2P && turn==WHITE) || (mode==P2P)){	
+		procedure();
+	}
 	glutPostRedisplay();
 }
 
 void Othello::timer(int dt){
 	//グローバルタイム
 	//if( stat != POSE && stat!=GAMEOVER &&  stat!=READY )time1++;
-	machine[0].place(&cursor,disk);
-	procedure();
+	if( ( mode==P2M && turn==WHITE ) || (mode==M2P && turn==BLACK) || ( mode==M2M ) ){
+		machine[turn].place(&cursor,disk);
+		procedure();
+	}
 	glutPostRedisplay();
 }
 
@@ -20,13 +24,10 @@ void Othello::procedure(){
 	//アクセス制御
 	if( stat != PLAY )return;
 	//出番のアクセス制御
-	//if( ( mode==P2M && turn==WHITE ) || (mode==M2P && turn==BLACK) || ( mode==M2M ) ){	}
-	//if( ( mode==P2M && turn==BLACK ) || (mode==M2P && turn==WHITE) ){	}
 	//置ける場所かどうか
 	if( disk[cursor.x][cursor.y].putable[turn] != true )return;
 	//石を置く
-	disk[cursor.x][cursor.y].onboard=true;
-	disk[cursor.x][cursor.y].color=turn;
+	disk[cursor.x][cursor.y].place(turn);
 	before.x=cursor.x;
 	before.y=cursor.y;
 	//リバースする
@@ -37,22 +38,21 @@ void Othello::procedure(){
 		stat=GAMEOVER;
 		for(int i=0;i<8;i++){
 			for(int j=0;j<8;j++){
-				if( disk[i][j].onboard ){
+				if( disk[i][j].isOnboard() ){
 					num_disk[disk[i][j].color]++;
 				}
 			}
 		}
 	}
-	std::cout<<"a";
 }
 
 //マウスの動き
 void Othello::mouse(int cx,int cy){
 	//人間は自分のターンではないときはカーソルを動かさない。
-//	if( ( mode==P2M && turn==BLACK ) || ( mode==M2P && turn==WHITE ) || ( mode==P2P ) ){
+	if( ( mode==P2M && turn==BLACK ) || ( mode==M2P && turn==WHITE ) || ( mode==P2P ) ){
 		cursor.x=cx/60-1;
 		cursor.y=cy/60-1;
-//	}
+	}
 }
 
 void Othello::key(unsigned char k, int x, int y){
@@ -110,41 +110,41 @@ void Othello::display(void){
 	glutSwapBuffers();
 }
 
-
-bool Othello::line(bool color,signed int y,signed int x,signed int dy,signed int dx){
+bool Othello::line(bool color,int x,int y,int dx,int dy){
 	x+=dx;
 	y+=dy;
 	//while(異色の石が存在 && 盤内)
-	while( disk[x][y].color!=color && disk[x][y].onboard==true && ( x>=0 && x<=7 ) && ( y>=0 && y<=7 ) ){
+	while( disk[x][y].color!=color && disk[x][y].isOnboard() && ( x>=0 && x<=7 ) && ( y>=0 && y<=7 ) ){
 		x+=dx;
 		y+=dy;
-		if( disk[x][y].color==color && disk[x][y].onboard==true && ( x>=0 && x<=7 ) && ( y>=0 && y<=7 ) )return true;
+		if( disk[x][y].color==color && disk[x][y].isOnboard() && ( x>=0 && x<=7 ) && ( y>=0 && y<=7 ) )return true;
 	}
 	return false;
 }
-void Othello::reverse(bool color,signed int cy ,signed int cx){
-	signed int vx=cx,vy=cy;
-	//I2 center,vector;
-	for(signed int i=-1;i<=1;i++){
-		for(signed int j=-1;j<=1;j++){
-			if( line(color,cx,cy,j,i) ){	//reverse可
+
+void Othello::reverse(bool color,int cx ,int cy){
+	I2 vector(cx,cy);
+	for(int i=-1;i<=1;i++){
+		for(int j=-1;j<=1;j++){
+			if( line(color,cx,cy,i,j) ){	//reverse可
 				do{
-					vx+=i;
-					vy+=j;
-					disk[vx][vy].color=color;	//reverse
-				}while(disk[vy+i][vx+j].color!=color);	//同じ色の石が見つかるまで
-				vx=cx;	//置いた場所に戻る
-				vy=cy;
+					vector.x+=i;
+					vector.y+=j;
+					disk[vector.x][vector.y].color=color;	//reverse
+				}while(disk[vector.x+i][vector.y+j].color!=color && vector.isOnboard() );	//同じ色の石が見つかるまで
+				vector.x=cx;	//置いた場所に戻る
+				vector.y=cy;
 			}
 		}
 	}
 }
+
 bool Othello::CanPut(bool color){
 	bool state=false;	//コードを短くするためだけの変数
 	bool putable=false;	//戻す用変数
 	for(signed int x=0;x<8;x++){
 		for(signed int y=0;y<8;y++){
-			if(disk[x][y].onboard == true)state=false;
+			if(disk[x][y].isOnboard())state=false;
 			else{
 				state=(
                        line(color,x,y,+1, 0)||
@@ -166,10 +166,8 @@ bool Othello::CanPut(bool color){
 
 void Othello::init(){
 	/* 初期設定 */
-	//gameover=false;
 	stat=READY;
 	mode=P2P;
-	
 	for(int m=0;m<8;m++){
 		for(int n=0;n<8;n++){
 			disk[m][n].x=m;
@@ -178,13 +176,11 @@ void Othello::init(){
 			disk[m][n].color=false;
 		}
 	}
-	disk[3][3].onboard=true;
-	disk[4][3].onboard=true;
-	disk[3][4].onboard=true;
-	disk[4][4].onboard=true;
+	disk[3][3].place(BLACK);
+	disk[4][3].place(WHITE);
+	disk[3][4].place(WHITE);
+	disk[4][4].place(BLACK);
     
-	disk[3][4].color=WHITE;
-	disk[4][3].color=WHITE;
     
 	CanPut(BLACK);
 	turn=BLACK;

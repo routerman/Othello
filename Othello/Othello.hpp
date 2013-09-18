@@ -31,14 +31,8 @@ public:
 	void display();
 
 	void procedure();
-	bool line(bool color,signed int y,signed int x,signed int dy,signed int dx);
-	void reverse(bool color,signed int cy ,signed int cx);
+	bool line(bool color,int x,int y,int dx,int dy);
+	void reverse(bool color,int cy ,int cx);
 	bool CanPut(bool color);
-	Othello(){
-		time1=time2=0;
-		stat=READY;
-		mode=P2M;
-		debug=false;
-		turn=false;
-	}
+	Othello(){}
 };
