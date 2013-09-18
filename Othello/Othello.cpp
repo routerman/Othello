@@ -3,7 +3,7 @@
 void Othello::mousebotton(int state ,int button, int cx,int cy){
 	if(  state != GLUT_DOWN ||  button != GLUT_LEFT_BUTTON  )return;
 	if( ( mode==P2M && turn==BLACK ) || (mode==M2P && turn==WHITE) || (mode==P2P)){	
-		procedure();
+		Proc();
 	}
 	glutPostRedisplay();
 }
@@ -12,15 +12,16 @@ void Othello::timer(int dt){
 	//グローバルタイム
 	//if( stat != POSE && stat!=GAMEOVER &&  stat!=READY )time1++;
 	if( ( mode==P2M && turn==WHITE ) || (mode==M2P && turn==BLACK) || ( mode==M2M ) ){
-		machine[turn].place(&cursor,disk);
-		procedure();
+		machine[turn].select(&cursor,disk);
+		std::cout<<"a";
+		Proc();
 	}
 	glutPostRedisplay();
 }
 
 
 //石を置く際の共通処理
-void Othello::procedure(){
+void Othello::Proc(){
 	//アクセス制御
 	if( stat != PLAY )return;
 	//出番のアクセス制御
@@ -44,6 +45,7 @@ void Othello::procedure(){
 			}
 		}
 	}
+
 }
 
 //マウスの動き
@@ -70,7 +72,6 @@ void Othello::key(unsigned char k, int x, int y){
             stat=GAMEOVER;
             break;
         case 'p':	//ポーズ
-            //pose=!pose;
             if(stat==PLAY)stat=POSE;
 			else if(stat==POSE)stat=PLAY;
 
@@ -90,22 +91,24 @@ void Othello::key(unsigned char k, int x, int y){
 void Othello::display(void){
 	/* Before Draw */
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	/* 置いた場所 */
-	glColor3f(1,0,0);
-	DrawSquare(60*(before.x+1),60*(before.y+1));
+	if( stat == PLAY ){
+		/* 置いた場所 */
+		glColor3f(1,0,0);
+		DrawSquare(60*(before.x+1),60*(before.y+1));
+	}
 	for(int i=0;i<8;i++){
 		for(int j=0;j<8;j++){
 			disk[i][j].drow(turn);
 		}
 	}
 	board.drow(mode,stat);
-
-	/* カーソル */
-	if(turn)glColor3f(1,1,1);
-	else glColor3f(0,0,0);
-	//if( (cursor.x>=0) && (cursor.x<8) && (cursor.y>=0) && (cursor.y<8) )
-	DrawCircle(90+cursor.x*60,90+cursor.y*60);
-
+	//アクセス制御
+	if( stat == PLAY ){
+		/* カーソル */
+		if(turn)glColor3f(1,1,1);
+		else glColor3f(0,0,0);
+		if( cursor.isOnboard() )DrawCircle(90+cursor.x*60,90+cursor.y*60);
+	}
 	/* After Draw */
 	glutSwapBuffers();
 }
@@ -164,10 +167,10 @@ bool Othello::CanPut(bool color){
 	return putable;
 }
 
+/* 初期設定 */
 void Othello::init(){
-	/* 初期設定 */
 	stat=READY;
-	mode=P2P;
+	mode=M2P;
 	for(int m=0;m<8;m++){
 		for(int n=0;n<8;n++){
 			disk[m][n].x=m;

@@ -44,7 +44,7 @@ bool Machine::corner_lose(bool color, int y,int x){
 }
 */
 
-void Machine::place(I2 *c,Disk disk[][8]){
+void Machine::select(I2 *c,Disk disk[][8]){
 	static int data[8][8]={
 		{9,2,8,5,5,8,2,9},
 		{2,1,4,7,7,4,1,2},
@@ -71,13 +71,14 @@ void Machine::place(I2 *c,Disk disk[][8]){
 	if(max==0){
 		for(int i=0;i<8;i++){
 			for(int j=0;j<8;j++){
-				if( data[i][j] * disk[i][j].putable[color] > max ){
-					c->y=i;
-					c->x=j;
+				if( ( disk[i][j].putable[color] ) && ( data[i][j] > max ) ){
+					c->x=i;
+					c->y=j;
 					max=data[i][j];
 				}
 			}
 		}
 	}
-	
+//	std::cout<<c->x<<","<<c->y<<std::endl;
+
 }

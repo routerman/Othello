@@ -36,7 +36,7 @@ public:
 		else GL::DrawString(600,410,"1PCOM");
 		if( mode==M2P || mode==P2P )GL::DrawString(600,440,"2PYOU");
 		else GL::DrawString(600,440,"2PCOM");
-		if(stat==POSE)GL::DrawString(600,300,"POSE");
+		if(stat==POSE || stat==READY )GL::DrawString(600,300,"POSE");
 		    
 		GL::DrawWatch(700,100,0);
 	}

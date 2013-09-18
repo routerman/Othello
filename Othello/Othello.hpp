@@ -30,7 +30,7 @@ public:
 	void timer(int dt);
 	void display();
 
-	void procedure();
+	void Proc();
 	bool line(bool color,int x,int y,int dx,int dy);
 	void reverse(bool color,int cy ,int cx);
 	bool CanPut(bool color);

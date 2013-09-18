@@ -8,6 +8,7 @@ public:
 	bool putable[2];
 	void place(bool color){
 		onboard=true;
+		putable[0]=putable[1]=false;
 		this->color=color;
 	}
 	void drow(bool turn){
