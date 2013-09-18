@@ -1,7 +1,5 @@
-#pragma once
+
 #include "Machine.hpp"
-#include "Disk.hpp"
-#include "Othello.hpp"
 
 /*
 bool Machine::corner_lose(bool color, int y,int x){
@@ -46,7 +44,7 @@ bool Machine::corner_lose(bool color, int y,int x){
 }
 */
 
-void Machine::computer(bool color,int &m,int &n,Disk disk[][8]){
+void Machine::place(I2 *c,Disk disk[][8]){
 	static int data[8][8]={
 		{9,2,8,5,5,8,2,9},
 		{2,1,4,7,7,4,1,2},
@@ -73,9 +71,9 @@ void Machine::computer(bool color,int &m,int &n,Disk disk[][8]){
 	if(max==0){
 		for(int i=0;i<8;i++){
 			for(int j=0;j<8;j++){
-				if( ( data[i][j]*disk[i][j].Canput_white > max  && turn==WHITE ) || ( data[i][j]*disk[i][j].Canput_black > max && turn==BLACK ) ){
-					m=i;
-					n=j;
+				if( data[i][j] * disk[i][j].putable[color] > max ){
+					c->y=i;
+					c->x=j;
 					max=data[i][j];
 				}
 			}

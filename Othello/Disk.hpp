@@ -1,8 +1,20 @@
 #pragma once
+#include "GL.hpp"
 class Disk{
 public:
-	bool put;			//既に置いてあるかどうか
+	char x,y;
+	bool onboard;			//既に置いてあるかどうか
 	bool color;			//色
-	bool Canput_white;	//白が置けるか
-	bool Canput_black;	//黒が置けるか
+	bool putable[2];
+	void drow(bool turn){
+			if( onboard ){
+				if( color )glColor3f(1,1,1);
+				else glColor3f(0,0,0);
+				GL::DrawCircle(90+60*x,90+60*y);
+			}
+			if( putable[turn] ){
+				glColor3f(0,1,0.1);
+				GL::DrawSquare(60+60*x,60+60*y);
+			}
+	}
 };

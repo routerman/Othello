@@ -3,48 +3,25 @@
 #include "Board.hpp"
 #include "Disk.hpp"
 #include "Machine.hpp"
+#include "I2.hpp"
 
-#define BLACK false
-#define WHITE true
-
-enum Mode{
-	P2P,
-	P2M,
-	M2P,
-	M2M,
-};
-
-enum Stat{
-	READY,
-	PLAY,
-	POSE,
-	WAIT,
-	TURN,
-	THINK,
-	END,
-	GAMEOVER
-};
 
 class Othello : public GL{
 	/* ëÄçÏïœêî */
 	Mode mode;
 	Stat stat;
-	unsigned int mx;
-	unsigned int my;
-	unsigned int w;
-	unsigned int b;
-	unsigned int preY;
-	unsigned int preX;
+	Disk disk[8][8];
+	Disk f;
+	Machine machine[2];
+	Board board;
+	I2 cursor;
+	I2 before;
 
-	unsigned int time1;
-	unsigned int time2;
+	unsigned int num_disk[2];
+	unsigned int time1,time2;
 
 	bool debug;
 	bool turn;	//false:BLACK true:WHITE
-	Disk disk[8][8];
-	Disk f;
-	Machine c;
-	Board board;
 public:
 	void init();
 	void mousebotton(int state ,int button, int cx,int cy);
@@ -53,6 +30,7 @@ public:
 	void timer(int dt);
 	void display();
 
+	void procedure();
 	bool line(bool color,signed int y,signed int x,signed int dy,signed int dx);
 	void reverse(bool color,signed int cy ,signed int cx);
 	bool CanPut(bool color);

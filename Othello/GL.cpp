@@ -31,7 +31,7 @@ void GL::DrawString(int x, int y, char *s)
 	}
 }
 //êŒÇï`Ç≠ä÷êî
-void GL::Drawstone(int x, int y){
+void GL::DrawCircle(int x, int y){
 	GLint x1, y1;
 	glBegin(GL_POLYGON);
 	for(int i=0; i<18; i++){
@@ -42,7 +42,7 @@ void GL::Drawstone(int x, int y){
 	glEnd();
 }
 //íuÇØÇÈèÍèäÇé¶Ç∑ä÷êî
-void GL::Drawsquare( int x, int y){
+void GL::DrawSquare( int x, int y){
 	glBegin(GL_POLYGON);
 	glVertex2i((GLint)x,(GLint)y);
 	glVertex2i((GLint)x+60,(GLint)y);
@@ -70,4 +70,15 @@ void GL::DrawWatch(int x,int y,float t){
 	glVertex2f(x+70*sin(t*3.14/30),y-70*cos(t*3.14/30));
 	glEnd();
     
+}
+void GL::CreateWindow(int left,int right,int bottom,int top,const char *name){
+	glutInitWindowPosition(500, 500);
+	if(top-bottom>0){
+		glutInitWindowSize(right-left,top-bottom);
+	}else{
+		glutInitWindowSize(right-left,bottom-top);
+	}
+	glutCreateWindow(name);
+	gluOrtho2D(left,right,bottom,top);
+	glutSetCursor(GLUT_CURSOR_RIGHT_ARROW);//cursor
 }

@@ -20,6 +20,7 @@
   <ItemGroup>
     <ClInclude Include="Board.hpp" />
     <ClInclude Include="GL.hpp" />
+    <ClInclude Include="I2.hpp" />
     <ClInclude Include="Machine.hpp" />
     <ClInclude Include="Othello.hpp" />
     <ClInclude Include="Disk.hpp" />
