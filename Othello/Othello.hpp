@@ -1,7 +1,7 @@
 #pragma once
 #include "GL.hpp"
 #include "Board.hpp"
-#include "Stone.hpp"
+#include "Disk.hpp"
 #include "Machine.hpp"
 
 #define STAT_READY 0
@@ -40,9 +40,9 @@ class Othello : public GL{
 	bool turn;	//false:BLACK true:WHITE
 
 
-	stone s[8][8];
-	stone f;
-	machine c;
+	Disk s[8][8];
+	Disk f;
+	Machine c;
 	Board board;
 public:
 	void InitGame();

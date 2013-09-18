@@ -50,3 +50,25 @@ void GL::Drawsquare( int x, int y){
 	glVertex2i((GLint)x,(GLint)y+60);
 	glEnd();
 }
+/*
+//アナログ時計を描く関数
+void DrawWatch(int x,int y,float t){
+	GLint x1, y1, i;
+	glColor3f(1,1,1);
+	glBegin(GL_POLYGON);
+	for(i=0; i<360; i+=20){
+		x1=x+80*sin(M_PI*i/180);
+		y1=y+80*cos(M_PI*i/180);
+		glVertex2d((GLint)x1,(GLint)y1);
+	}
+	glEnd();
+    
+	glColor3f(0,0,0);
+	glLineWidth(2);
+	glBegin(GL_LINES);
+	glVertex2f(x,y);
+	glVertex2f(x+70*sin(t*3.14/30),y-70*cos(t*3.14/30));
+	glEnd();
+    
+}
+*/

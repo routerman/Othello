@@ -1,10 +1,10 @@
 #pragma once
-#include "Stone.hpp"
-class machine{
+#include "Disk.hpp"
+class Machine{
 	bool turn;
 public:
 	//‚»‚±‚ğ’u‚­‚Æ‘Šè‚ÉŠp‚ğ‚Æ‚ç‚ê‚é‚©’²‚×‚éŠÖ”
 	bool corner_lose(bool color, int y,int x);
-	void computer(bool color,int &m,int &n,stone s[][8]);
+	void computer(bool color,int &m,int &n,Disk s[][8]);
 };
 

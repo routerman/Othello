@@ -1,10 +1,9 @@
 #pragma once
 #include "Machine.hpp"
-#include "Stone.hpp"
+#include "Disk.hpp"
 #include "Othello.hpp"
 /*
-
-bool machine::corner_lose(bool color, int y,int x){
+bool Machine::corner_lose(bool color, int y,int x){
 	bool putable=false;	//ñﬂÇËíl éÊÇÁÇÍÇÈèÍçá:true,éÊÇÁÇÍÇ»Ç¢èÍçá;false
 	bool buf_isi[8][8];
 	bool buf_wb[8][8];
@@ -45,7 +44,8 @@ bool machine::corner_lose(bool color, int y,int x){
 	return putable;
 }
 */
-void machine::computer(bool color,int &m,int &n,stone s[][8]){
+
+void Machine::computer(bool color,int &m,int &n,Disk s[][8]){
 	static int data[8][8]={
 		{9,2,8,5,5,8,2,9},
 		{2,1,4,7,7,4,1,2},
@@ -69,7 +69,6 @@ void machine::computer(bool color,int &m,int &n,stone s[][8]){
 		}
 	}
 	*/
-	
 	if(max==0){
 		for(int i=0;i<8;i++){
 			for(int j=0;j<8;j++){

@@ -15,15 +15,14 @@
     <ClCompile Include="GL.cpp" />
     <ClCompile Include="Machine.cpp" />
     <ClCompile Include="Othello.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Stone.cpp" />
+    <ClCompile Include="Disk.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.hpp" />
     <ClInclude Include="GL.hpp" />
     <ClInclude Include="Machine.hpp" />
     <ClInclude Include="Othello.hpp" />
-    <ClInclude Include="Stone.hpp" />
+    <ClInclude Include="Disk.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{91A3DB68-33F9-4C21-9A58-6B3E44297238}</ProjectGuid>

@@ -1,3 +1,3 @@
-#include "Stone.hpp"
+#include "Disk.hpp"
 
 //コンピュータ ver3.3

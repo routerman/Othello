@@ -1,8 +1,5 @@
 #include "Othello.hpp"
 
-#include <GL/glut.h>
-
-
 void Othello::mousebotton(int state ,int button, int cx,int cy){
 
 	if(  state != GLUT_DOWN ||  button !=GLUT_LEFT_BUTTON  )return;
@@ -117,6 +114,9 @@ void Othello::display(void){
 	/* Before Draw */
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	board.drow(player,stat);
+	/* 置いた場所 */
+	glColor3f(1,0,0);
+	Drawsquare(60*(preX+1),60*(preY+1));
    
 	for(int i=0;i<8;i++){
 		for(int j=0;j<8;j++){
@@ -131,9 +131,6 @@ void Othello::display(void){
 			}
 		}
 	}
-	/* 置いた場所 */
-	glColor3f(1,0,0);
-	Drawsquare(60*(preX+1),60*(preY+1));
 
 	/* カーソル */
 	if(turn)glColor3f(1,1,1);
@@ -249,4 +246,54 @@ void Othello::InitGame(){
 	turn=BLACK;
 	preX=preY=w=b=time1=time2=0;
     
+}
+
+
+
+Othello othello;
+
+
+void mousebotton(int state ,int button, int cx,int cy){
+	othello.mousebotton(state,button,cx,cy);
+}
+
+void mouse(int cx,int cy){
+	othello.mouse(cx,cy);
+}
+void key(unsigned char k, int x, int y){
+	othello.key(k,x,y);
+}
+
+void display(void){
+	othello.display();
+}
+
+void timer(int dt){
+	othello.timer(dt);
+	glutTimerFunc(dt,timer,10);
+
+}
+
+int main(void){
+	othello.InitGame();
+    
+	int i=1;
+	char *cv[1]={"SD"};
+	glutInit(&i, cv);
+	glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
+	glutInitWindowSize(800,600);
+	glutInitWindowPosition(200, 200);
+	glutCreateWindow("OCERO");
+	glClearColor( 0 , 0.7, 0, 1);	//オセロ盤の色
+	gluOrtho2D(0, 800, 600,0);
+	glutSetCursor(GLUT_CURSOR_HELP);
+	glutDisplayFunc(display);
+	glutKeyboardFunc(key);
+	glutPassiveMotionFunc(mouse);
+	glutMouseFunc(mousebotton);
+	glutSetCursor(GLUT_CURSOR_RIGHT_ARROW);
+	glutTimerFunc(0,timer,100);
+    
+	glutMainLoop();
+	return 0;
 }
