@@ -41,14 +41,12 @@ class Othello : public GL{
 
 	bool debug;
 	bool turn;	//false:BLACK true:WHITE
-
-
-	Disk s[8][8];
+	Disk disk[8][8];
 	Disk f;
 	Machine c;
 	Board board;
 public:
-	void InitGame();
+	void init();
 	void mousebotton(int state ,int button, int cx,int cy);
 	void mouse(int cx,int cy);
 	void key(unsigned char k, int x, int y);

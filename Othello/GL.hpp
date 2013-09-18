@@ -21,7 +21,11 @@ class GL{
 public:
 	static void CreateWindow(int left,int right,int bottom,int top,const char *name){
 		glutInitWindowPosition(0, 0);
-		glutInitWindowSize(right-left,top-bottom);
+		if(top-bottom>0){
+			glutInitWindowSize(right-left,top-bottom);
+		}else{
+			glutInitWindowSize(right-left,bottom-top);
+		}
 		glutCreateWindow(name);
 		gluOrtho2D(left,right,bottom,top);
 		glutSetCursor(GLUT_CURSOR_RIGHT_ARROW);//cursor
