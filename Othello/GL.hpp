@@ -39,6 +39,7 @@ public:
 	static void DrawString(int x, int y, char *s);
 	static void Drawstone(int x, int y);
 	static void Drawsquare( int x, int y);
-
+	
+	static void DrawWatch(int x,int y,float t);
 	GL(){}
 };

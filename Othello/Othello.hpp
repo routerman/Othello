@@ -4,26 +4,31 @@
 #include "Disk.hpp"
 #include "Machine.hpp"
 
-#define STAT_READY 0
-#define STAT_PLAY 1
-#define STAT_POSE 2
-#define STAT_WAIT 3
-#define STAT_TURN 4
-#define STAT_THINK 5
-#define STAT_END 6
-#define STAT_GAMEOVER 7
-
-#define MODE_YOUYOU 1
-#define MODE_YOUCOM 2
-#define MODE_COMYOU 3
-#define MODE_COMCOM 4
-
 #define BLACK false
 #define WHITE true
 
+enum Mode{
+	P2P,
+	P2M,
+	M2P,
+	M2M,
+};
+
+enum Stat{
+	READY,
+	PLAY,
+	POSE,
+	WAIT,
+	TURN,
+	THINK,
+	END,
+	GAMEOVER
+};
 
 class Othello : public GL{
 	/* ëÄçÏïœêî */
+	Mode mode;
+	Stat stat;
 	unsigned int mx;
 	unsigned int my;
 	unsigned int w;
@@ -34,8 +39,6 @@ class Othello : public GL{
 	unsigned int time1;
 	unsigned int time2;
 
-	unsigned int stat;
-	unsigned int player;
 	bool debug;
 	bool turn;	//false:BLACK true:WHITE
 
@@ -57,8 +60,8 @@ public:
 	bool CanPut(bool color);
 	Othello(){
 		time1=time2=0;
-		stat=STAT_READY;
-		player=MODE_YOUCOM;
+		stat=READY;
+		mode=P2M;
 		debug=false;
 		turn=false;
 	}

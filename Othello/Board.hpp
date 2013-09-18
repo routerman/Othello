@@ -36,7 +36,6 @@ public:
 		else GL::DrawString(600,440,"2P COMPUTER");
 		//if(stat==STAT_POSE)GL::DrawString(600,300,"POSE");
 		    
-		//DrawWatch(700,100,time1);
-
+		GL::DrawWatch(700,100,0);
 	}
 };

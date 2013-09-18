@@ -5,7 +5,7 @@ void Othello::mousebotton(int state ,int button, int cx,int cy){
 	if(  state != GLUT_DOWN ||  button !=GLUT_LEFT_BUTTON  )return;
 	if( (s[my][mx].Canput_white != true && turn==true ) || ( s[my][mx].Canput_black != true && turn==false) )return;
     
-	if( ( ( player==MODE_YOUCOM && turn==BLACK ) || (player==MODE_COMYOU && turn==WHITE ) ) && (stat!=STAT_POSE) && (stat!=STAT_GAMEOVER) ){
+	if( ( ( mode==P2M && turn==BLACK ) || (mode==M2P && turn==WHITE ) ) && (stat!=POSE) && (stat!=GAMEOVER) ){
 		s[my][mx].put=true;
 		s[my][mx].color=turn;
 		preY=my;
@@ -14,7 +14,7 @@ void Othello::mousebotton(int state ,int button, int cx,int cy){
 		
 		if( CanPut(!turn) )turn=!turn;	//敵が置ける場合は交代
 		else if( !CanPut(turn) ){
-			stat=STAT_GAMEOVER;
+			stat=GAMEOVER;
 			for(int i=0;i<8;i++){
 				for(int j=0;j<8;j++){
 					if( s[i][j].color && s[i][j].put )w++;
@@ -24,11 +24,11 @@ void Othello::mousebotton(int state ,int button, int cx,int cy){
 		}
 	}
 	//コンピュータ相手なら思考時間
-	if( player != MODE_YOUYOU ){
-		stat=STAT_THINK;
+	if( mode != P2P ){
+		stat=THINK;
 		time2=50;
 	}else{
-		stat=STAT_TURN;
+		stat=TURN;
 		time2=60;
 	}
 	glutPostRedisplay();
@@ -50,19 +50,19 @@ void Othello::key(unsigned char k, int x, int y){
             InitGame();
             break;
         case 13: /* ENTER */
-            if( stat == STAT_READY )stat=STAT_PLAY;
+            if( stat == READY )stat=PLAY;
             break;
         case 'q':
-            stat=STAT_GAMEOVER;
+            stat=GAMEOVER;
             break;
         case 'p':	//ポーズ
             //pose=!pose;
-            stat=STAT_POSE;
+            stat=POSE;
             break;
         case 'm':	//playmode切り替え
-            if( stat==STAT_READY ){
-                player++;
-                if(player==5)player=1;
+            if( stat==READY ){
+				mode = static_cast<Mode>(mode + 1);
+                if(mode>M2M)mode=P2P;
             }
             break;
         default:
@@ -74,20 +74,20 @@ void Othello::key(unsigned char k, int x, int y){
 
 void Othello::timer(int dt){
 	//グローバルタイム
-	if( stat != STAT_POSE && stat!=STAT_GAMEOVER &&  stat!=STAT_READY )time1++;
+	if( stat != POSE && stat!=GAMEOVER &&  stat!=READY )time1++;
     
 	//思考時間
-	if( stat == STAT_THINK ){
+	if( stat == THINK ){
 		time2--;
 		if(time2>0){
 			glutPostRedisplay();
 			//glutTimerFunc(dt,this->timer,10);
 			return;
 		}
-		stat=STAT_PLAY;
+		stat=PLAY;
 	}
     
-	if( ( (player==MODE_YOUCOM && turn==WHITE ) || (player==MODE_COMYOU && turn==BLACK) || ( player==MODE_COMCOM ) ) && ( stat != STAT_POSE ) && ( stat != STAT_GAMEOVER ) && ( stat != STAT_READY ) ){
+	if( ( (mode==P2M && turn==WHITE ) || (mode==M2P && turn==BLACK) || ( mode==M2M ) ) && ( stat != POSE ) && ( stat != GAMEOVER ) && ( stat != READY ) ){
 		int m,n;
 		c.computer(turn,m,n,s);
 		s[m][n].put=true;
@@ -97,7 +97,7 @@ void Othello::timer(int dt){
 		reverse(turn,m,n);
 		if( CanPut(!turn) )turn=!turn;	//敵が置ける場合は交代
 		else if( !CanPut(turn) ){	//敵が置けない場合、自分も置けない場合は終了
-			stat=STAT_GAMEOVER;
+			stat=GAMEOVER;
 			for(int i=0;i<8;i++){
 				for(int j=0;j<8;j++){
 					if( s[i][j].color && s[i][j].put )w++;
@@ -113,7 +113,6 @@ void Othello::timer(int dt){
 void Othello::display(void){
 	/* Before Draw */
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	board.drow(player,stat);
 	/* 置いた場所 */
 	glColor3f(1,0,0);
 	Drawsquare(60*(preX+1),60*(preY+1));
@@ -132,12 +131,14 @@ void Othello::display(void){
 		}
 	}
 
+	board.drow(mode,stat);
+
 	/* カーソル */
 	if(turn)glColor3f(1,1,1);
 	else glColor3f(0,0,0);
 	if( (mx>=0) && (mx<=7) && (my>=0) && (my<=7)  )Drawstone(90+mx*60,90+my*60);
 
-	if( stat == STAT_READY ){
+	if( stat == READY ){
 		/* モード設定 */
 		glColor3f(1,1,1);
 		glBegin(GL_QUADS);
@@ -149,7 +150,7 @@ void Othello::display(void){
 		glColor3f(0,0,0);
 		DrawString(130,310,"Please, press m and choose mode,");
 		DrawString(130,340,"and press Enter to start GAME!");
-	}else if( stat == STAT_GAMEOVER ){
+	}else if( stat == GAMEOVER ){
 		/* ゲーム終了 */
 		glColor3f(1,1,1);
 		glBegin(GL_QUADS);
@@ -226,7 +227,7 @@ bool Othello::CanPut(bool color){
 void Othello::InitGame(){
 	/* 初期設定 */
 	//gameover=false;
-	stat=STAT_READY;
+	stat=READY;
 	
 	for(int m=0;m<8;m++){
 		for(int n=0;n<8;n++){
