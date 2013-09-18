@@ -19,15 +19,13 @@ void GL::DrawLine(int width, int x1, int y1, int x2, int y2)
 	glVertex2i((GLint)x2,(GLint)y2);
 	glEnd();
 }
-void GL::DrawString(int x, int y, char *s)
+void GL::DrawString(int x, int y, string s)
 {
 	glRasterPos2f(x, y);
-    
 	//for(; *s != '/0'; s++){
     //for(; *s != '\n'; s++){
-    for(unsigned int i=0; i < strlen(s) ;i++){
-		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, *s);
-        s++;
+	for(unsigned int i=0; i < s.length() ;i++){
+		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, s[i]);
 	}
 }
 //Î‚ð•`‚­ŠÖ”

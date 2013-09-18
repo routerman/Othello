@@ -57,7 +57,7 @@ void Machine::select(I2 *c,Disk disk[][8]){
 	};
     
 	int max=0;
-	/*
+/*	
 	for(int i=0;i<8;i++){
 		for(int j=0;j<8;j++){
 			if( ( ( data[i][j]*s[i][j].Canput_white > max  && turn==WHITE ) || ( data[i][j]*s[i][j].Canput_black > max && turn==BLACK ) ) && corner_lose(turn,i,j) == false ){
@@ -79,6 +79,4 @@ void Machine::select(I2 *c,Disk disk[][8]){
 			}
 		}
 	}
-//	std::cout<<c->x<<","<<c->y<<std::endl;
-
 }

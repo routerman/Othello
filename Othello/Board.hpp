@@ -5,7 +5,7 @@
 class Board{
 	//disk<map>
 public:
-	void drow(int mode,int stat){
+	void drow(int mode,int stat,int a[2]){
 		/* ƒIƒZƒƒ‰ƒCƒ“ */
 		glColor3f(0,0,0);
 		for(int i=1;i<=9;i++){
@@ -31,13 +31,19 @@ public:
 		glVertex2i(570,600);
 		glEnd();
 
-
+		//mode
 		if( mode==P2M || mode==P2P )GL::DrawString(600,410,"1PYOU");
 		else GL::DrawString(600,410,"1PCOM");
 		if( mode==M2P || mode==P2P )GL::DrawString(600,440,"2PYOU");
 		else GL::DrawString(600,440,"2PCOM");
+		
+		//stat
 		if(stat==POSE || stat==READY )GL::DrawString(600,300,"POSE");
-		    
+		else if(stat==GAMEOVER){
+			if(a[0]>a[1])GL::DrawString(600,300,"BLACK");
+			else if(a[0]<a[1]) GL::DrawString(600,300,"WHITE");
+			else GL::DrawString(600,300,"DROW");
+		}
 		GL::DrawWatch(700,100,0);
 	}
 };

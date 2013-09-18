@@ -7,8 +7,7 @@
 
 
 class Othello : public GL{
-	/* ‘€ì•Ï” */
-	Mode mode;
+	int mode;
 	Stat stat;
 	Disk disk[8][8];
 	Disk f;
@@ -16,8 +15,8 @@ class Othello : public GL{
 	Board board;
 	I2 cursor;
 	I2 before;
+	int num_disk[2];
 
-	unsigned int num_disk[2];
 	unsigned int time1,time2;
 
 	bool debug;

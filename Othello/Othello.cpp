@@ -2,7 +2,7 @@
 
 void Othello::mousebotton(int state ,int button, int cx,int cy){
 	if(  state != GLUT_DOWN ||  button != GLUT_LEFT_BUTTON  )return;
-	if( ( mode==P2M && turn==BLACK ) || (mode==M2P && turn==WHITE) || (mode==P2P)){	
+	if( ( ( mode==P2M && turn==BLACK ) || ( mode==M2P && turn==WHITE) || ( mode==P2P ) ) && ( stat == PLAY )){	
 		Proc();
 	}
 	glutPostRedisplay();
@@ -11,9 +11,8 @@ void Othello::mousebotton(int state ,int button, int cx,int cy){
 void Othello::timer(int dt){
 	//グローバルタイム
 	//if( stat != POSE && stat!=GAMEOVER &&  stat!=READY )time1++;
-	if( ( mode==P2M && turn==WHITE ) || (mode==M2P && turn==BLACK) || ( mode==M2M ) ){
+	if( ( ( mode==P2M && turn==WHITE ) || ( mode==M2P && turn==BLACK) || ( mode==M2M ) ) && ( stat == PLAY )){
 		machine[turn].select(&cursor,disk);
-		std::cout<<"a";
 		Proc();
 	}
 	glutPostRedisplay();
@@ -22,11 +21,11 @@ void Othello::timer(int dt){
 
 //石を置く際の共通処理
 void Othello::Proc(){
-	//アクセス制御
-	if( stat != PLAY )return;
 	//出番のアクセス制御
 	//置ける場所かどうか
-	if( disk[cursor.x][cursor.y].putable[turn] != true )return;
+	//アクセス制御
+	if( stat != PLAY )return;
+	if( disk[cursor.x][cursor.y].putable[turn] == false )return;
 	//石を置く
 	disk[cursor.x][cursor.y].place(turn);
 	before.x=cursor.x;
@@ -34,8 +33,9 @@ void Othello::Proc(){
 	//リバースする
 	reverse(turn,cursor.x,cursor.y);
 	//置けるかチェック
-	if( CanPut(!turn) )turn=!turn;	//敵が置ける場合は交代
-	else if( !CanPut(turn) ){	//敵が置けない場合、自分も置けない場合は終了
+	if( CanPut(!turn) ){
+		turn=!turn;	//敵が置ける場合は交代
+	}else if( !CanPut(turn) ){	//敵が置けない場合、自分も置けない場合は終了
 		stat=GAMEOVER;
 		for(int i=0;i<8;i++){
 			for(int j=0;j<8;j++){
@@ -45,7 +45,6 @@ void Othello::Proc(){
 			}
 		}
 	}
-
 }
 
 //マウスの動き
@@ -79,7 +78,8 @@ void Othello::key(unsigned char k, int x, int y){
         case 'm':	//playmode切り替え
             if( stat==READY ){
 				mode = static_cast<Mode>(mode + 1);
-                if(mode>M2M)mode=P2P;
+                //mode++;
+				if(mode>M2M)mode=P2P;
             }
             break;
         default:
@@ -101,13 +101,36 @@ void Othello::display(void){
 			disk[i][j].drow(turn);
 		}
 	}
-	board.drow(mode,stat);
+	board.drow(mode,stat,num_disk);
 	//アクセス制御
 	if( stat == PLAY ){
 		/* カーソル */
 		if(turn)glColor3f(1,1,1);
 		else glColor3f(0,0,0);
 		if( cursor.isOnboard() )DrawCircle(90+cursor.x*60,90+cursor.y*60);
+	}else if( stat == GAMEOVER ){
+		/* ゲーム終了 */
+		if( num_disk[BLACK] <= num_disk[WHITE] ){
+			glColor3f(1,1,1);
+		}else if(num_disk[BLACK] > num_disk[WHITE] ){
+			glColor3f(0,0,0);
+		}
+		glBegin(GL_QUADS);
+		glVertex2i(100,340);
+		glVertex2i(100,260);
+		glVertex2i(500,260);
+		glVertex2i(500,340);
+		glEnd();
+        
+		stringstream message;
+		if( num_disk[BLACK] <= num_disk[WHITE] ){
+			message << "white=" << num_disk[WHITE] << ",black=" << num_disk[BLACK] << "WHITE WIN!";
+			glColor3f(0,0,0);
+		}else if(num_disk[BLACK] > num_disk[WHITE] ){
+			message << "white=" << num_disk[WHITE] << ",black=" << num_disk[BLACK] << "BLACK WIN!";
+			glColor3f(1,1,1);
+		}
+		DrawString(130,300,message.str());
 	}
 	/* After Draw */
 	glutSwapBuffers();
@@ -170,7 +193,7 @@ bool Othello::CanPut(bool color){
 /* 初期設定 */
 void Othello::init(){
 	stat=READY;
-	mode=M2P;
+	mode=P2M;
 	for(int m=0;m<8;m++){
 		for(int n=0;n<8;n++){
 			disk[m][n].x=m;
@@ -184,6 +207,8 @@ void Othello::init(){
 	disk[3][4].place(WHITE);
 	disk[4][4].place(BLACK);
     
+	machine[BLACK].setColor(BLACK);
+	machine[WHITE].setColor(WHITE);
     
 	CanPut(BLACK);
 	turn=BLACK;

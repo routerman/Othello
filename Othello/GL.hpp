@@ -2,8 +2,9 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
-#include <string>
 #include <iostream>
+#include <sstream>
+#include <string>
 #include <GL/glut.h>
 #define M_PI 3.1415
 
@@ -30,7 +31,7 @@ public:
 	//parts
 	static void DrawPoint(float size, int x, int y);
 	static void DrawLine(int width, int x1, int y1, int x2, int y2);
-	static void DrawString(int x, int y, char *s);
+	static void DrawString(int x, int y, string s);
 	static void DrawCircle(int x, int y);
 	static void DrawSquare( int x, int y);
 	
