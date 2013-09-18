@@ -2,30 +2,6 @@
 
 #include <GL/glut.h>
 
-void Othello::InitGame(){
-	/* 初期設定 */
-	//gameover=false;
-	stat=STAT_READY;
-	
-	for(int m=0;m<8;m++){
-		for(int n=0;n<8;n++){
-			s[m][n].put=false;
-			s[m][n].color=false;
-		}
-	}
-	s[3][3].put=true;
-	s[4][3].put=true;
-	s[3][4].put=true;
-	s[4][4].put=true;
-    
-	s[3][4].color=WHITE;
-	s[4][3].color=WHITE;
-    
-	//CanPut(BLACK);
-	turn=BLACK;
-	preX=preY=w=b=time1=time2=0;
-    
-}
 
 void Othello::mousebotton(int state ,int button, int cx,int cy){
 
@@ -116,7 +92,7 @@ void Othello::timer(int dt){
     
 	if( ( (player==MODE_YOUCOM && turn==WHITE ) || (player==MODE_COMYOU && turn==BLACK) || ( player==MODE_COMCOM ) ) && ( stat != STAT_POSE ) && ( stat != STAT_GAMEOVER ) && ( stat != STAT_READY ) ){
 		int m,n;
-		c.computer(turn,m,n);
+		c.computer(turn,m,n,s);
 		s[m][n].put=true;
 		s[m][n].color=turn;
 		preY=m;
@@ -138,94 +114,32 @@ void Othello::timer(int dt){
 
 
 void Othello::display(void){
-	unsigned int i,j;
-    
 	/* Before Draw */
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
-	/* 置ける場所 */
-	glColor3f(0,1,0.1);
-	for(i=0;i<=7;i++){
-		for(j=0;j<=7;j++){
-			if( (s[i][j].Canput_white == true && turn == WHITE ) || (s[i][j].Canput_black==true && turn==BLACK) )Drawsquare(60+60*j,60+60*i);
+	board.drow(player,stat);
+   
+	for(int i=0;i<8;i++){
+		for(int j=0;j<8;j++){
+			if( s[i][j].put ){
+				if( s[i][j].color )glColor3f(1,1,1);
+				else glColor3f(0,0,0);
+				Drawstone(90+60*j,90+60*i);
+			}
+			if( (s[i][j].Canput_white == true && turn == WHITE ) || (s[i][j].Canput_black==true && turn==BLACK) ){
+				glColor3f(0,1,0.1);
+				Drawsquare(60+60*j,60+60*i);
+			}
 		}
 	}
-    
 	/* 置いた場所 */
 	glColor3f(1,0,0);
 	Drawsquare(60*(preX+1),60*(preY+1));
-    
+
 	/* カーソル */
 	if(turn)glColor3f(1,1,1);
 	else glColor3f(0,0,0);
 	if( (mx>=0) && (mx<=7) && (my>=0) && (my<=7)  )Drawstone(90+mx*60,90+my*60);
-	
-	/* オセロライン */
-	glColor3f(0,0,0);
-	for(i=1;i<=9;i++){
-		DrawLine(2,60*i,60,60*i,540);//縦
-		DrawLine(2,60,60*i,540,60*i);//横
-	}
-	DrawPoint(8,180,180);
-	DrawPoint(8,180,420);
-	DrawPoint(8,420,180);
-	DrawPoint(8,420,420);
-    
-	DrawString(580,500,"p:POSE");
-	DrawString(580,530,"backspace:BACK");
-	DrawString(580,560,"m:PLAYMODE");
-	DrawString(580,590,"esc:EXIT");
-    
-	if(player<=2)DrawString(600,410,"1P YOU");
-	else DrawString(600,410,"1P COMPUTER");
-	if(player%2)DrawString(600,440,"2P YOU");
-	else DrawString(600,440,"2P COMPUTER");
-	if(stat==STAT_POSE)DrawString(600,300,"POSE");
-    
-	glLineWidth(7);
-	glBegin(GL_LINES);
-	glColor3f(0,0,0);
-	glVertex2i(570,0);
-    
-	glColor3f(1,1,1);
-	glVertex2i(570,600);
-	glEnd();
-    
-	//DrawWatch(700,100,time1);
-    
-	//ここまではテンプレート
-    
-	//switch(){
-	//case STAT_:
-	//defalt:
-	//}
-	//animation_turn(turn,time1,30,30);
-	if( stat == STAT_TURN ){
-		//ひっくり返しアニメーション
-		/* 石 */
-		//animation_turn(turn,time);
-        
-		for(i=0;i<=7;i++){
-			for(j=0;j<=7;j++){
-				if(s[i][j].put){
-					if( s[i][j].color )glColor3f(1,1,1);
-					else glColor3f(0,0,0);
-					Drawstone(90+60*j,90+60*i);
-				}
-			}
-		}
-	}else{
-		/* 石 */
-		for(i=0;i<=7;i++){
-			for(j=0;j<=7;j++){
-				if( s[i][j].put ){
-					if( s[i][j].color )glColor3f(1,1,1);
-					else glColor3f(0,0,0);
-					Drawstone(90+60*j,90+60*i);
-				}
-			}
-		}
-	}
+
 	if( stat == STAT_READY ){
 		/* モード設定 */
 		glColor3f(1,1,1);
@@ -254,8 +168,6 @@ void Othello::display(void){
 	//	else if(w<=b)sprintf(message,"white=%d,black=%d BLACK WIN!",w,b);
 		DrawString(130,300,message);
 	}
-    
-    
 	/* After Draw */
 	glutSwapBuffers();
 }
@@ -312,4 +224,29 @@ bool Othello::CanPut(bool color){
 		}
 	}
 	return putable;
+}
+
+void Othello::InitGame(){
+	/* 初期設定 */
+	//gameover=false;
+	stat=STAT_READY;
+	
+	for(int m=0;m<8;m++){
+		for(int n=0;n<8;n++){
+			s[m][n].put=false;
+			s[m][n].color=false;
+		}
+	}
+	s[3][3].put=true;
+	s[4][3].put=true;
+	s[3][4].put=true;
+	s[4][4].put=true;
+    
+	s[3][4].color=WHITE;
+	s[4][3].color=WHITE;
+    
+	CanPut(BLACK);
+	turn=BLACK;
+	preX=preY=w=b=time1=time2=0;
+    
 }

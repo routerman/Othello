@@ -1,3 +1,4 @@
+#pragma once
 class stone{
 public:
 	bool put;			//Šù‚É’u‚¢‚Ä‚ ‚é‚©‚Ç‚¤‚©

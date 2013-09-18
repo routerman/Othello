@@ -1,3 +1,4 @@
+#pragma once
 #include "GL.hpp"
 #include "Board.hpp"
 #include "Stone.hpp"
@@ -42,6 +43,7 @@ class Othello : public GL{
 	stone s[8][8];
 	stone f;
 	machine c;
+	Board board;
 public:
 	void InitGame();
 	void mousebotton(int state ,int button, int cx,int cy);

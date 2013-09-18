@@ -1,5 +1,7 @@
+#pragma once
 #include "Machine.hpp"
-
+#include "Stone.hpp"
+#include "Othello.hpp"
 /*
 
 bool machine::corner_lose(bool color, int y,int x){
@@ -43,7 +45,7 @@ bool machine::corner_lose(bool color, int y,int x){
 	return putable;
 }
 */
-void machine::computer(bool color,int &m,int &n){
+void machine::computer(bool color,int &m,int &n,stone s[][8]){
 	static int data[8][8]={
 		{9,2,8,5,5,8,2,9},
 		{2,1,4,7,7,4,1,2},
@@ -67,7 +69,7 @@ void machine::computer(bool color,int &m,int &n){
 		}
 	}
 	*/
-	/*
+	
 	if(max==0){
 		for(int i=0;i<8;i++){
 			for(int j=0;j<8;j++){
@@ -79,5 +81,5 @@ void machine::computer(bool color,int &m,int &n){
 			}
 		}
 	}
-	*/
+	
 }
