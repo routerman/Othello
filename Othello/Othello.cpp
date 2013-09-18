@@ -10,7 +10,7 @@ void Othello::mousebotton(int state ,int button, int cx,int cy){
 
 void Othello::timer(int dt){
 	//グローバルタイム
-	//if( stat != POSE && stat!=GAMEOVER &&  stat!=READY )time1++;
+	if( stat == PLAY )time1++;
 	if( ( ( mode==P2M && turn==WHITE ) || ( mode==M2P && turn==BLACK) || ( mode==M2M ) ) && ( stat == PLAY )){
 		machine[turn].select(&cursor,disk);
 		Proc();
@@ -78,7 +78,6 @@ void Othello::key(unsigned char k, int x, int y){
         case 'm':	//playmode切り替え
             if( stat==READY ){
 				mode = static_cast<Mode>(mode + 1);
-                //mode++;
 				if(mode>M2M)mode=P2P;
             }
             break;
@@ -101,7 +100,7 @@ void Othello::display(void){
 			disk[i][j].drow(turn);
 		}
 	}
-	board.drow(mode,stat,num_disk);
+	board.drow(mode,stat,num_disk,time1);
 	//アクセス制御
 	if( stat == PLAY ){
 		/* カーソル */
@@ -131,6 +130,18 @@ void Othello::display(void){
 			glColor3f(1,1,1);
 		}
 		DrawString(130,300,message.str());
+	}else if( stat == READY ){
+		/* モード設定 */
+		glColor3f(1,1,1);
+		glBegin(GL_QUADS);
+		glVertex2i(100,360);
+		glVertex2i(100,280);
+		glVertex2i(500,280);
+		glVertex2i(500,360);
+		glEnd();
+		glColor3f(0,0,0);
+		DrawString(130,310,"Please, press m and choose mode,");
+		DrawString(130,340,"and press Enter to start GAME!");
 	}
 	/* After Draw */
 	glutSwapBuffers();
