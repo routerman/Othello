@@ -55,7 +55,7 @@ void Machine::select(I2 *c,Disk disk[][8]){
 			}
 		}
 	}
-
+	
 	if(max==0){
 		for(int i=0;i<8;i++){
 			for(int j=0;j<8;j++){

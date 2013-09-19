@@ -22,7 +22,7 @@ public:
 	void cpdisk(Disk disk[][8]){
 		for(int m=0;m<8;m++){
 			for(int n=0;n<8;n++){
-				disk[m][n]=this->disk[m][n];
+				this->disk[m][n]=disk[m][n];
 			}
 		}
 	}
