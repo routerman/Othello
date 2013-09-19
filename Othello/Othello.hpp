@@ -1,5 +1,6 @@
 #pragma once
 #include "Routerman.hpp"
+#include "Agent.hpp"
 #include "GL.hpp"
 #include "Board.hpp"
 #include "Disk.hpp"
@@ -7,8 +8,9 @@
 
 
 class Othello : public GL{
-	Routerman routerman[2];
-	//Machine machine;
+	Routerman routerman;
+	Agent agent;
+
 
 	Board board;
 	Mode mode;
@@ -34,6 +36,6 @@ public:
 	bool line(bool color,int x,int y,int dx,int dy);
 	void reverse(bool color,int cy ,int cx);
 	bool CanPut(bool color);
-	Othello(){}
+	Othello();
 	Othello(Disk disk[][8]);
 };

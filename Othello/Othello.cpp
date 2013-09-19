@@ -12,7 +12,8 @@ void Othello::timer(int dt){
 	//グローバルタイム
 	if( stat == PLAY )time1++;
 	if( ( ( mode==P2M && turn==WHITE ) || ( mode==M2P && turn==BLACK) || ( mode==M2M ) ) && ( stat == PLAY )){
-		routerman[turn].select(cursor,disk);
+		routerman.select(cursor,disk);
+		agent.select(cursor,disk);
 		Proc();
 	}
 	glutPostRedisplay();
@@ -63,9 +64,13 @@ void Othello::key(unsigned char k, int x, int y){
             break;
         case 127: /* delete */
             init();
+			stat=READY;
             break;
         case 13: /* ENTER */
-            if( stat == READY )stat=PLAY;
+            if( stat == READY ){
+				init();
+				stat=PLAY;
+			}
             break;
         case 'q':
             stat=GAMEOVER;
@@ -199,10 +204,8 @@ bool Othello::CanPut(bool color){
 	return putable;
 }
 
-/* 初期設定 */
+/* ゲーム単位の初期設定 */
 void Othello::init(){
-	stat=READY;
-	mode=P2M;
 	for(int m=0;m<8;m++){
 		for(int n=0;n<8;n++){
 			disk[m][n].x=m;
@@ -215,17 +218,17 @@ void Othello::init(){
 	disk[4][3].place(WHITE);
 	disk[3][4].place(WHITE);
 	disk[4][4].place(BLACK);
-    
-	routerman[BLACK].setColor(BLACK);
-	routerman[WHITE].setColor(WHITE);
-    
 	CanPut(BLACK);
+
 	turn=BLACK;
-	cursor.set(0,0);
-	before.set(-2,-2);
 	time1=time2=0;
 	num_disk[0]=num_disk[1]=0;
-    
+	cursor.set(-2,-2);
+	before.set(-2,-2);
+
+
+	routerman.setColor(BLACK);
+	agent.setColor(WHITE);    
 }
 
 
@@ -235,6 +238,12 @@ Othello::Othello( Disk disk[][8] ){
 			this->disk[m][n]=disk[m][n];
 		}
 	}
+}
+
+/* 起動後、最初に呼び出される。*/
+Othello::Othello(){
+	stat=READY;
+	mode=P2M;
 }
 
 
@@ -295,7 +304,6 @@ void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integ
  
 
 int main(int argc, char **argv){
-	othello.init();
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
 	othello.CreateWindow(0,800,600,0,"othello");

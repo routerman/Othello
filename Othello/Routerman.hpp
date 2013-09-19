@@ -6,13 +6,14 @@
 #define BLACK false
 #define WHITE true
 
+
+/* Routermanの思考を埋め込んだコンピュータ(厨二www) */
 class Routerman : public Machine{
 	int weight[8][8];
 public:
 	//そこを置くと相手に角をとられるか調べる関数
 	bool corner_lose(int x,int y,Disk s[][8]);
 	void select(I2 &cursor,Disk disk[][8]);
-	void setColor(bool color){this->color=color;}
 	Routerman(){
 		active=false;
 		int init[8][8]={
