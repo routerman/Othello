@@ -79,12 +79,10 @@ void GL::DrawWatch(int x,int y,float t){
 }
 void GL::CreateWindow(int left,int right,int bottom,int top,const char *name){
 	glutInitWindowPosition(500, 500);
-	if(top-bottom>0){
-		glutInitWindowSize(right-left,top-bottom);
-	}else{
-		glutInitWindowSize(right-left,bottom-top);
-	}
+	glutInitWindowSize(abs(right-left),	abs(top-bottom));
 	glutCreateWindow(name);
 	gluOrtho2D(left,right,bottom,top);
 	glutSetCursor(GLUT_CURSOR_RIGHT_ARROW);//cursor
 }
+
+

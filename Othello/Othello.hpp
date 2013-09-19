@@ -17,15 +17,10 @@ class Othello : public GL{
 	bool turn;	//false:BLACK true:WHITE
 	int num_disk[2];
 	unsigned int time1,time2;
+	stringstream message;
+
 public:
 	Disk disk[8][8];
-	void cpdisk(Disk disk[][8]){
-		for(int m=0;m<8;m++){
-			for(int n=0;n<8;n++){
-				this->disk[m][n]=disk[m][n];
-			}
-		}
-	}
 	void init();
 	void mousebotton(int state ,int button, int cx,int cy);
 	void mouse(int cx,int cy);
@@ -38,4 +33,5 @@ public:
 	void reverse(bool color,int cy ,int cx);
 	bool CanPut(bool color);
 	Othello(){}
+	Othello(Disk disk[][8]);
 };

@@ -8,9 +8,10 @@
 #include <GL/glut.h>
 #define M_PI 3.1415
 
-/////////////////
-/* DisplayŠÖ” */
-/////////////////
+/*
+reshape‘Î‰
+private‰»
+*/
 using namespace std;
 
 class GL{
@@ -18,6 +19,7 @@ class GL{
 	int time;
 	static int width;
 	static int height;
+	static string title;
 	//int key;
 	//bool D3;
 public:

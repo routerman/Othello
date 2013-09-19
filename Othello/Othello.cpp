@@ -119,8 +119,7 @@ void Othello::display(void){
 		glVertex2i(500,260);
 		glVertex2i(500,340);
 		glEnd();
-        
-		stringstream message;
+		message.str("");
 		if( num_disk[BLACK] <= num_disk[WHITE] ){
 			message << "white=" << num_disk[WHITE] << ",black=" << num_disk[BLACK] << "WHITE WIN!";
 			glColor3f(0,0,0);
@@ -222,9 +221,20 @@ void Othello::init(){
     
 	CanPut(BLACK);
 	turn=BLACK;
-	cursor.x=cursor.y=time1=time2=0;
+	cursor.set(0,0);
+	before.set(-2,-2);
+	time1=time2=0;
 	num_disk[0]=num_disk[1]=0;
     
+}
+
+
+Othello::Othello( Disk disk[][8] ){
+	for(int m=0;m<8;m++){
+		for(int n=0;n<8;n++){
+			this->disk[m][n]=disk[m][n];
+		}
+	}
 }
 
 
@@ -262,6 +272,28 @@ void timer(int dt){
 	glutTimerFunc(dt,timer,10);
 }
 
+void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integer
+	// Compute aspect ratio of the new window
+	/*
+	if (height == 0) height = 1;                // To prevent divide by 0
+	GLfloat aspect = (GLfloat)width / (GLfloat)height;
+ 
+	// Set the viewport to cover the new window
+	glViewport(0, 0, width, height);
+ 
+	// Set the aspect ratio of the clipping area to match the viewport
+	glMatrixMode(GL_PROJECTION);  // To operate on the Projection matrix
+	glLoadIdentity();             // Reset the projection matrix
+	if (width >= height) {
+	// aspect >= 1, set the height from -1 to 1, with larger width
+	gluOrtho2D(-1.0 * aspect, 1.0 * aspect, -1.0, 1.0);
+	} else {
+	// aspect < 1, set the width to -1 to 1, with larger height
+	gluOrtho2D(-1.0, 1.0, -1.0 / aspect, 1.0 / aspect);
+	}*/
+}
+ 
+
 int main(int argc, char **argv){
 	othello.init();
 	glutInit(&argc, argv);
@@ -269,6 +301,7 @@ int main(int argc, char **argv){
 	othello.CreateWindow(0,800,600,0,"othello");
 	glClearColor( 0 , 0.7, 0, 1);//back ground color
 	glutDisplayFunc(display);
+	glutReshapeFunc(reshape);
 	glutKeyboardFunc(key);
 	glutPassiveMotionFunc(mouse);
 	glutMouseFunc(mousebotton);
