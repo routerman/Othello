@@ -101,12 +101,11 @@ void Othello::display(void){
 		}
 	}
 	board.drow(mode,stat,num_disk,time1);
-	//アクセス制御
 	if( stat == PLAY ){
 		/* カーソル */
-		if(turn)glColor3f(1,1,1);
+		if(turn==WHITE)glColor3f(1,1,1);
 		else glColor3f(0,0,0);
-		if( cursor.isOnboard() )DrawCircle(90+cursor.x*60,90+cursor.y*60);
+		if( cursor.isOnboard() && disk[cursor.x][cursor.y].putable[turn] )DrawCircle(90+cursor.x*60,90+cursor.y*60);
 	}else if( stat == GAMEOVER ){
 		/* ゲーム終了 */
 		if( num_disk[BLACK] <= num_disk[WHITE] ){
