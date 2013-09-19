@@ -28,44 +28,41 @@ public:
 		//時計
 		GL::DrawWatch(700,100,time1/60);  
 		//stat
-		if(stat==POSE )GL::DrawString(600,250,"POSE");
+		if(stat==POSE )GL::DrawString(600,250,"PAUSE");
 		else if(stat==READY )GL::DrawString(600,250,"READY");
-		//対戦モード
-		glColor3f(0,0,0);
-		if( mode==P2M || mode==P2P )GL::DrawString(600,300,"1P YOU");
-		else GL::DrawString(600,300,"1P COM");
-		if( mode==M2P || mode==P2P )GL::DrawString(600,330,"2P YOU");
-		else GL::DrawString(600,330,"2P COM");
-		//コンピュータ
-		if(cpu!=NON){
-			if(mode==P2M){
-				glColor3f(1,1,1);
-				if(cpu==ROUTERMAN)GL::DrawString(600,400,"ROUTERMAN");
-				else GL::DrawString(600,430,"AGENT");
-			}else if(mode==M2P){
-				glColor3f(0,0,0);
-				if(cpu==ROUTERMAN)GL::DrawString(600,400,"ROUTERMAN");
-				else GL::DrawString(600,430,"AGENT");		
-			}else if(mode==M2M){
-				glColor3f(0,0,0);
-				if(cpu==R2A){
-					glColor3f(0,0,0);
-					GL::DrawString(600,400,"ROUTERMAN");
-					glColor3f(1,1,1);
-					GL::DrawString(600,430,"AGENT");
-				}else if(cpu==A2R){
-					glColor3f(0,0,0);
-					GL::DrawString(600,400,"AGENT");
-					glColor3f(1,1,1);
-					GL::DrawString(600,430,"ROUTERMAN");
-				}
-			}
-		}
 
+		string p1("1P "),p2("2P ");
+		if( mode==P2P ){
+			p1+="HUMAN";
+			p2+="HUMAN";
+		}else if( mode==P2M){
+			p1+="HUMAN";
+			if( cpu==AGENT )p2+="AGENT";
+			else if( cpu==ROUTERMAN )p2+="ROUTERMAN";
+		}else if( mode==M2P){
+			p2+="HUMAN";
+			if( cpu==AGENT )p1+="AGENT";
+			else if( cpu==ROUTERMAN )p1+="ROUTERMAN";
+		}else if( mode==M2M ){
+			if( cpu==A2R ){
+				p1+="AGENT";
+				p2+="ROUTERMAN";
+			}else if( cpu==R2A ){
+				p1+="ROUTERMAN";
+				p2+="AGENT";
+			}
+		}	
+		glColor3f(0,0,0);
+		GL::DrawString(580,300,p1);
+		glColor3f(1,1,1);
+		GL::DrawString(580,330,p2);
+
+		glColor3f(0,0,0);
 		//キーマニュアル
-		GL::DrawString(580,500,"p:POSE");
-		GL::DrawString(580,530,"backspace:BACK");
-		GL::DrawString(580,560,"m:PLAYMODE");
-		GL::DrawString(580,590,"esc:EXIT");
+		GL::DrawString(580,430,"Pause:-p");
+		GL::DrawString(580,460,"Undo:-u");
+		GL::DrawString(580,490,"Gamemode:-m");
+		GL::DrawString(580,520,"selectCPU:-c");
+		GL::DrawString(580,550,"Exit:-Esc");
 	}
 };

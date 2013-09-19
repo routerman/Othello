@@ -168,8 +168,8 @@ void Othello::display(void){
 		glVertex2i(500,360);
 		glEnd();
 		glColor3f(0,0,0);
-		DrawString(130,310,"Please, press m and choose mode,");
-		DrawString(130,340,"and press Enter to start GAME!");
+		DrawString(130,310,"Press 'm' and choose gamemode,");
+		DrawString(130,340,"Press Enter to start GAME!");
 	}
 	/* After Draw */
 	glutSwapBuffers();
