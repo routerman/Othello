@@ -12,7 +12,7 @@ void Othello::timer(int dt){
 	//グローバルタイム
 	if( stat == PLAY )time1++;
 	if( ( ( mode==P2M && turn==WHITE ) || ( mode==M2P && turn==BLACK) || ( mode==M2M ) ) && ( stat == PLAY )){
-		machine[turn].select(cursor,disk);
+		routerman[turn].select(cursor,disk);
 		Proc();
 	}
 	glutPostRedisplay();
@@ -216,8 +216,8 @@ void Othello::init(){
 	disk[3][4].place(WHITE);
 	disk[4][4].place(BLACK);
     
-	machine[BLACK].setColor(BLACK);
-	machine[WHITE].setColor(WHITE);
+	routerman[BLACK].setColor(BLACK);
+	routerman[WHITE].setColor(WHITE);
     
 	CanPut(BLACK);
 	turn=BLACK;

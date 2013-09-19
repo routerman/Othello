@@ -1,5 +1,5 @@
 #pragma once
-#include "Machine.hpp"
+#include "Routerman.hpp"
 #include "GL.hpp"
 #include "Board.hpp"
 #include "Disk.hpp"
@@ -7,7 +7,9 @@
 
 
 class Othello : public GL{
-	Machine machine[2];
+	Routerman routerman[2];
+	//Machine machine;
+
 	Board board;
 	Mode mode;
 	Stat stat;

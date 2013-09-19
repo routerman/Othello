@@ -1,12 +1,12 @@
 //hppファイルでインクルードするとC2146問題が発生する。
 #include "Othello.hpp"
-#include "Machine.hpp"
+#include "Routerman.hpp"
 
 /*
 一手先を読み、角が取られないかチェックする。
 取られる場合はtrue 取られない場合はfalse
 */
-bool Machine::corner_lose(int x,int y,Disk disk[][8]){
+bool Routerman::corner_lose(int x,int y,Disk disk[][8]){
 	//copy disk
 	Othello *test = new Othello(disk);
 	test->disk[x][y].onboard=true;//一時的に置いてみる。
@@ -22,7 +22,7 @@ bool Machine::corner_lose(int x,int y,Disk disk[][8]){
 	return putable;
 }
 
-void Machine::select(I2 &cursor,Disk disk[][8]){
+void Routerman::select(I2 &cursor,Disk disk[][8]){
 	int max=0;	
 	for(int i=0;i<8;i++){
 		for(int j=0;j<8;j++){

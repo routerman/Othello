@@ -6,7 +6,7 @@
 #define BLACK false
 #define WHITE true
 
-class Machine{
+class Routerman{
 	bool active;
 	bool color;
 	int weight[8][8];
@@ -15,7 +15,7 @@ public:
 	bool corner_lose(int x,int y,Disk s[][8]);
 	void select(I2 &c,Disk s[][8]);
 	void setColor(bool color){this->color=color;}
-	Machine(){
+	Routerman(){
 		active=false;
 		int init[8][8]={
 			{9,2,8,5,5,8,2,9},

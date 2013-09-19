@@ -13,7 +13,7 @@
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="GL.cpp" />
-    <ClCompile Include="Machine.cpp" />
+    <ClCompile Include="Routerman.cpp" />
     <ClCompile Include="Othello.cpp" />
     <ClCompile Include="Disk.cpp" />
   </ItemGroup>
@@ -21,7 +21,7 @@
     <ClInclude Include="Board.hpp" />
     <ClInclude Include="GL.hpp" />
     <ClInclude Include="I2.hpp" />
-    <ClInclude Include="Machine.hpp" />
+    <ClInclude Include="Routerman.hpp" />
     <ClInclude Include="Othello.hpp" />
     <ClInclude Include="Disk.hpp" />
   </ItemGroup>
