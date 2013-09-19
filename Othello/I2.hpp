@@ -44,3 +44,12 @@ enum Stat{
 	END,
 	GAMEOVER
 };
+
+
+enum Cpu{
+	NON,
+	AGENT,
+	ROUTERMAN,
+	A2R,
+	R2A
+};

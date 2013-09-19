@@ -11,10 +11,12 @@ class Othello : public GL{
 	Routerman routerman;
 	Agent agent;
 
+	bool active_routerman;
 
 	Board board;
 	Mode mode;
 	Stat stat;
+	Cpu cpu;
 	I2 cursor;
 	I2 before;
 	//bool debug;

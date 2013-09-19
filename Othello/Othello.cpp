@@ -12,8 +12,15 @@ void Othello::timer(int dt){
 	//グローバルタイム
 	if( stat == PLAY )time1++;
 	if( ( ( mode==P2M && turn==WHITE ) || ( mode==M2P && turn==BLACK) || ( mode==M2M ) ) && ( stat == PLAY )){
-		routerman.select(cursor,disk);
-		agent.select(cursor,disk);
+		if( cpu==AGENT ){
+			agent.select(cursor,disk);
+		}else if( cpu==ROUTERMAN ){
+			routerman.select(cursor,disk);
+		}else if( ( cpu==A2R && turn==BLACK ) || ( cpu==R2A && turn==WHITE )){
+			agent.select(cursor,disk);
+		}else if( ( cpu==A2R && turn==WHITE ) || ( cpu==R2A && turn==BLACK )){
+			routerman.select(cursor,disk);
+		}
 		Proc();
 	}
 	glutPostRedisplay();
@@ -33,10 +40,10 @@ void Othello::Proc(){
 	before.y=cursor.y;
 	//リバースする
 	reverse(turn,cursor.x,cursor.y);
-	//置けるかチェック
+	//敵が置けるかチェック
 	if( CanPut(!turn) ){
-		turn=!turn;	//敵が置ける場合は交代
-	}else if( !CanPut(turn) ){	//敵が置けない場合、自分も置けない場合は終了
+		turn=!turn;	//交代
+	}else if( !CanPut(turn) ){	//自分も置けない場合は終了
 		stat=GAMEOVER;
 		for(int i=0;i<8;i++){
 			for(int j=0;j<8;j++){
@@ -81,14 +88,32 @@ void Othello::key(unsigned char k, int x, int y){
 
             break;
         case 'm':	//playmode切り替え
-            if( stat==READY ){
-				mode = static_cast<Mode>(mode + 1);
-				if(mode>M2M)mode=P2P;
-            }
+            if( stat!=READY )break;
+			mode = static_cast<Mode>(mode + 1);
+			if(mode>M2M)mode=P2P;
+			if(mode==P2P){
+				cpu=NON;
+			}else if( mode==P2M || mode==M2P){
+				cpu=AGENT;
+			}else if( mode==M2M ){
+				cpu=A2R;
+			}
+			break;
+        case 'c':	//computer切り替え
+            if( stat!=READY )break;
+			cpu = static_cast<Cpu>(cpu + 1);
+			if(mode==P2P){
+				cpu=NON;
+			}else if( mode==P2M || mode==M2P){
+				if( cpu>ROUTERMAN )cpu=AGENT;
+			}else if( mode==M2M ){
+				if( cpu>R2A )cpu=A2R;
+			}
             break;
         default:
             break;
 	}
+	std::cout<<mode<<","<<cpu<<std::endl;
 	glutPostRedisplay();
 }
 
@@ -105,7 +130,7 @@ void Othello::display(void){
 			disk[i][j].drow(turn);
 		}
 	}
-	board.drow(mode,stat,num_disk,time1);
+	board.drow(mode,stat,cpu,time1);
 	if( stat == PLAY ){
 		/* カーソル */
 		if(turn==WHITE)glColor3f(1,1,1);
@@ -226,9 +251,30 @@ void Othello::init(){
 	cursor.set(-2,-2);
 	before.set(-2,-2);
 
+	if( mode==P2M){
+		agent.setColor(WHITE);
+		routerman.setColor(WHITE);
+	}else if( mode==M2P ){
+		agent.setColor(BLACK);
+		routerman.setColor(BLACK);
+	}else if( mode==M2M && cpu==A2R ){
+		agent.setColor(BLACK);   
+		routerman.setColor(WHITE);
+	}else if( mode==M2M && cpu==R2A ){
+		routerman.setColor(BLACK);
+		agent.setColor(WHITE);   
+	}
 
-	routerman.setColor(BLACK);
-	agent.setColor(WHITE);    
+	if( cpu==AGENT ){
+		agent.select(cursor,disk);
+	}else if( cpu==ROUTERMAN ){
+		routerman.select(cursor,disk);
+	}else if( ( cpu==A2R && turn==BLACK ) || ( cpu==R2A && turn==WHITE )){
+		agent.select(cursor,disk);
+	}else if( ( cpu==A2R && turn==WHITE ) || ( cpu==R2A && turn==BLACK )){
+		routerman.select(cursor,disk);
+	}
+
 }
 
 
@@ -244,6 +290,7 @@ Othello::Othello( Disk disk[][8] ){
 Othello::Othello(){
 	stat=READY;
 	mode=P2M;
+	cpu=AGENT;
 }
 
 
