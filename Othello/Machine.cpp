@@ -1,6 +1,6 @@
-#include "Othello.hpp"//hppファイルでインクルードするとC2146問題が発生する。
+//hppファイルでインクルードするとC2146問題が発生する。
+#include "Othello.hpp"
 #include "Machine.hpp"
-
 
 /*
 一手先を読み、角が取られないかチェックする。
