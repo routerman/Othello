@@ -12,7 +12,7 @@ void Othello::timer(int dt){
 	//グローバルタイム
 	if( stat == PLAY )time1++;
 	if( ( ( mode==P2M && turn==WHITE ) || ( mode==M2P && turn==BLACK) || ( mode==M2M ) ) && ( stat == PLAY )){
-		machine[turn].select(&cursor,disk);
+		machine[turn].select(cursor,disk);
 		Proc();
 	}
 	glutPostRedisplay();
