@@ -1,19 +1,17 @@
 #pragma once
-
+#include "Machine.hpp"
 #include "Disk.hpp"
 #include "I2.hpp"
 
 #define BLACK false
 #define WHITE true
 
-class Routerman{
-	bool active;
-	bool color;
+class Routerman : public Machine{
 	int weight[8][8];
 public:
 	//‚»‚±‚ð’u‚­‚Æ‘ŠŽè‚ÉŠp‚ð‚Æ‚ç‚ê‚é‚©’²‚×‚éŠÖ”
 	bool corner_lose(int x,int y,Disk s[][8]);
-	void select(I2 &c,Disk s[][8]);
+	void select(I2 &cursor,Disk disk[][8]);
 	void setColor(bool color){this->color=color;}
 	Routerman(){
 		active=false;

@@ -13,17 +13,21 @@
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
     <ClCompile Include="GL.cpp" />
+    <ClCompile Include="Machine.cpp" />
     <ClCompile Include="Routerman.cpp" />
     <ClCompile Include="Othello.cpp" />
     <ClCompile Include="Disk.cpp" />
+    <ClCompile Include="Agent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Board.hpp" />
     <ClInclude Include="GL.hpp" />
     <ClInclude Include="I2.hpp" />
+    <ClInclude Include="Machine.hpp" />
     <ClInclude Include="Routerman.hpp" />
     <ClInclude Include="Othello.hpp" />
     <ClInclude Include="Disk.hpp" />
+    <ClInclude Include="Agent.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{91A3DB68-33F9-4C21-9A58-6B3E44297238}</ProjectGuid>
