@@ -22,7 +22,7 @@ class Othello : public GL{
 	//bool debug;
 	bool turn;	//false:BLACK true:WHITE
 	int num_disk[2];
-	unsigned int time1,time2;
+	unsigned int time1,subtime;
 	stringstream message;
 
 public:

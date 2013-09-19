@@ -10,7 +10,11 @@ void Othello::mousebotton(int state ,int button, int cx,int cy){
 
 void Othello::timer(int dt){
 	//グローバルタイム
-	if( stat == PLAY )time1++;
+	if( stat == PLAY ){
+		time1++;
+		subtime++;
+	}
+	if(subtime<100)return;
 	if( ( ( mode==P2M && turn==WHITE ) || ( mode==M2P && turn==BLACK) || ( mode==M2M ) ) && ( stat == PLAY )){
 		if( cpu==AGENT ){
 			agent.select(cursor,disk);
@@ -32,6 +36,7 @@ void Othello::Proc(){
 	//出番のアクセス制御
 	//置ける場所かどうか
 	//アクセス制御
+	subtime=0;
 	if( stat != PLAY )return;
 	if( disk[cursor.x][cursor.y].putable[turn] == false )return;
 	//石を置く
@@ -246,7 +251,7 @@ void Othello::init(){
 	CanPut(BLACK);
 
 	turn=BLACK;
-	time1=time2=0;
+	time1=subtime=0;
 	num_disk[0]=num_disk[1]=0;
 	cursor.set(-2,-2);
 	before.set(-2,-2);

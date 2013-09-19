@@ -29,11 +29,6 @@ enum Mode{
 };
 
 
-//#define P2P 0
-//#define P2M 1
-//#define M2P 2
-//#define M2M 3
-
 enum Stat{
 	READY,
 	PLAY,
