@@ -1,9 +1,9 @@
 Othello
 =======
+This is written with C++ language and OpenGL API.
 
-C++とOpenGLで作ったオセロです。
+In <a ref="http://keiorogiken.wordpress.com/2013/02/10/startopengl/" target="_blank" >this site</a>, I write the article about How to install OpenGL.
 
-OpenGLのインストールの仕方は<a href="http://keiorogiken.wordpress.com/2013/02/10/startopengl/" target="_blank" >サイト</a>に書いてあります。
 
 START : ENTER
 
@@ -15,3 +15,7 @@ RESET : delete
 
 Exit  : Esc 
 
+There are two AI.
+One is Routerman which I program.
+Second is Agent which I program as well, but it is weeker than Routerman now.
+So you can refine the algorithm of Agent and beat Routerman.
