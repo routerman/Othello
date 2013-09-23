@@ -1,11 +1,12 @@
 #pragma once
 #include "GL.hpp"
+#include "I2.hpp"
 class Disk{
-public:
-	char x,y;
+	I2 position;
 	bool onboard;			//Šù‚É’u‚¢‚Ä‚ ‚é‚©‚Ç‚¤‚©
 	bool color;			//F
 	bool putable[2];
+public:
 	void place(bool color){
 		onboard=true;
 		putable[0]=putable[1]=false;
@@ -15,14 +16,23 @@ public:
 			if( onboard ){
 				if( color )glColor3f(1,1,1);
 				else glColor3f(0,0,0);
-				GL::DrawCircle(90+60*x,90+60*y);
+				GL::DrawCircle(90+60*position.x,90+60*position.y);
 			}
 			if( putable[turn] ){
 				glColor3f(0,1,0.1);
-				GL::DrawSquare(60+60*x,60+60*y);
+				GL::DrawSquare(60+60*position.x,60+60*position.y);
 			}
 	}
-	bool isOnboard(){return onboard;}
+	bool isPutable(bool color){return this->putable[color];}
+	void setPutable(bool color,bool state){putable[color]=state;}
+	bool isOnboard(){return this->onboard;}
+	void setOnboard(bool onboard){this->onboard=onboard;}
+	bool getColor(){return this->color;}
+	void setColor(bool color){this->color=color;}
+	void init_postion(int x, int y){
+		this->position.x=x;
+		this->position.y=y;
+	}
 	Disk(){
 		onboard=false;
 	}

@@ -15,6 +15,7 @@ private‰»
 using namespace std;
 
 class GL{
+protected:
 	int waittime;
 	int time;
 	static int width;
