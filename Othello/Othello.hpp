@@ -19,12 +19,10 @@ class Othello : public GL{
 	Cpu cpu;
 	I2 cursor;
 	I2 before;
-	//bool debug;
 	bool turn;	//false:BLACK true:WHITE
 	int num_disk[2];
 	unsigned int time1,subtime;
 	stringstream message;
-	double ration;
 public:
 	Disk disk[8][8];
 	void init();

@@ -20,6 +20,7 @@ protected:
 	int time;
 	int width;
 	int height;
+	double ration;
 	static string title;
 	//int key;
 	//bool D3;

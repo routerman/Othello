@@ -17,16 +17,20 @@ void Othello::timer(int dt){
 	if(subtime<100)return;
 	if( ( ( mode==P2M && turn==WHITE ) || ( mode==M2P && turn==BLACK) || ( mode==M2M ) ) && ( stat == PLAY )){
 		if( cpu==AGENT ){
-			agent.select(disk);
+			agent.setDisk(disk);
+			agent.select();
 			cursor=agent.getCursor();
 		}else if( cpu==ROUTERMAN ){
-			routerman.select(disk);
+			routerman.setDisk(disk);
+			routerman.select();
 			cursor=routerman.getCursor();
 		}else if( ( cpu==A2R && turn==BLACK ) || ( cpu==R2A && turn==WHITE )){
-			agent.select(disk);
+			agent.setDisk(disk);
+			agent.select();
 			cursor=agent.getCursor();
 		}else if( ( cpu==A2R && turn==WHITE ) || ( cpu==R2A && turn==BLACK )){
-			routerman.select(disk);
+			routerman.setDisk(disk);
+			routerman.select();
 			cursor=routerman.getCursor();
 		}
 		Proc();
@@ -45,8 +49,7 @@ void Othello::Proc(){
 	if( cursor.isOnboard()==false || disk[cursor.x][cursor.y].isPutable(turn) == false )return;
 	//石を置く
 	disk[cursor.x][cursor.y].place(turn);
-	before.x=cursor.x;
-	before.y=cursor.y;
+	before=cursor;
 	//リバースする
 	reverse(turn,cursor.x,cursor.y);
 	//敵が置けるかチェック
@@ -66,7 +69,6 @@ void Othello::Proc(){
 
 //マウスの動き
 void Othello::mouse(int cx,int cy){
-	std::cout<<"("<<cx<<","<<cy<<")"<<std::endl;
 	//人間は自分のターンではないときはカーソルを動かさない。
 	if( ( mode==P2M && turn==BLACK ) || ( mode==M2P && turn==WHITE ) || ( mode==P2P ) ){
 		cursor.set(cx/(60*ration)-1,cy/(60*ration)-1);		

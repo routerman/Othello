@@ -6,6 +6,7 @@ class Disk{
 	bool onboard;			//Šù‚É’u‚¢‚Ä‚ ‚é‚©‚Ç‚¤‚©
 	bool color;			//F
 	bool putable[2];
+
 public:
 	void place(bool color){
 		onboard=true;
