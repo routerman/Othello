@@ -66,9 +66,10 @@ void Othello::Proc(){
 
 //マウスの動き
 void Othello::mouse(int cx,int cy){
+	std::cout<<"("<<cx<<","<<cy<<")"<<std::endl;
 	//人間は自分のターンではないときはカーソルを動かさない。
 	if( ( mode==P2M && turn==BLACK ) || ( mode==M2P && turn==WHITE ) || ( mode==P2P ) ){
-		cursor.set(cx/60-1,cy/60-1);
+		cursor.set(cx/(60*ration)-1,cy/(60*ration)-1);		
 	}
 }
 //キー入力
@@ -287,6 +288,7 @@ Othello::Othello(){
 	stat=READY;
 	mode=P2M;
 	cpu=AGENT;
+	ration=1;
 }
 
 
@@ -323,27 +325,7 @@ void timer(int dt){
 	othello.timer(dt);
 	glutTimerFunc(dt,timer,10);
 }
-
-void reshape(GLsizei width, GLsizei height) {  // GLsizei for non-negative integer
-	// Compute aspect ratio of the new window
-	/*
-	if (height == 0) height = 1;                // To prevent divide by 0
-	GLfloat aspect = (GLfloat)width / (GLfloat)height;
- 
-	// Set the viewport to cover the new window
-	glViewport(0, 0, width, height);
- 
-	// Set the aspect ratio of the clipping area to match the viewport
-	glMatrixMode(GL_PROJECTION);  // To operate on the Projection matrix
-	glLoadIdentity();             // Reset the projection matrix
-	if (width >= height) {
-	// aspect >= 1, set the height from -1 to 1, with larger width
-	gluOrtho2D(-1.0 * aspect, 1.0 * aspect, -1.0, 1.0);
-	} else {
-	// aspect < 1, set the width to -1 to 1, with larger height
-	gluOrtho2D(-1.0, 1.0, -1.0 / aspect, 1.0 / aspect);
-	}*/
-}
+void reshape(GLsizei width, GLsizei height){othello.reshape(width,height);}
  
 
 int main(int argc, char **argv){

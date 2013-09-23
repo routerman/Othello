@@ -18,26 +18,25 @@ class GL{
 protected:
 	int waittime;
 	int time;
-	static int width;
-	static int height;
+	int width;
+	int height;
 	static string title;
 	//int key;
 	//bool D3;
 public:
-	static void CreateWindow(int left,int right,int bottom,int top,const char *name);
-	static void display();
-	static void timer(int dt);
-	static void mouse(int cx,int cy);
-	static void mousebotton(int state ,int button, int cx,int cy);
-	static void key(unsigned char k, int x, int y);
-	static void init();
+	void CreateWindow(int left,int right,int bottom,int top,const char *name);
+	//static void display();
+	//static void timer(int dt);
+	//static void mouse(int cx,int cy);
+	//static void mousebotton(int state ,int button, int cx,int cy);
+	//static void key(unsigned char k, int x, int y);
+	//static void init();
 	//parts
 	static void DrawPoint(float size, int x, int y);
 	static void DrawLine(int width, int x1, int y1, int x2, int y2);
 	static void DrawString(int x, int y, string s);
 	static void DrawCircle(int x, int y);
 	static void DrawSquare( int x, int y);
-	
 	static void DrawWatch(int x,int y,float t);
 	GL(){}
 };

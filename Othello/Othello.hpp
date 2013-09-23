@@ -24,7 +24,7 @@ class Othello : public GL{
 	int num_disk[2];
 	unsigned int time1,subtime;
 	stringstream message;
-
+	double ration;
 public:
 	Disk disk[8][8];
 	void init();
@@ -33,6 +33,15 @@ public:
 	void key(unsigned char k, int x, int y);
 	void timer(int dt);
 	void display();
+	void reshape(GLsizei width, GLsizei height){
+		if( width > height*4/3 ){
+			ration=(double)height/600;
+			glViewport( 0, 0, height*4/3, height );
+		}else{
+			ration=(double)width/800;
+			glViewport( 0, 0, width, width*3/4 );
+		}
+	}
 
 	void Proc();
 	bool line(bool color,int x,int y,int dx,int dy);
