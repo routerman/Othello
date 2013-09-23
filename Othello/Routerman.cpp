@@ -22,7 +22,7 @@ bool Routerman::corner_lose(int x,int y,Disk disk[][8]){
 	return putable;
 }
 
-void Routerman::select(I2 &cursor,Disk disk[][8]){
+void Routerman::select(Disk disk[][8]){
 	int max=0;	
 	for(int i=0;i<8;i++){
 		for(int j=0;j<8;j++){

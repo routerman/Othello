@@ -17,13 +17,17 @@ void Othello::timer(int dt){
 	if(subtime<100)return;
 	if( ( ( mode==P2M && turn==WHITE ) || ( mode==M2P && turn==BLACK) || ( mode==M2M ) ) && ( stat == PLAY )){
 		if( cpu==AGENT ){
-			agent.select(cursor,disk);
+			agent.select(disk);
+			cursor=agent.getCursor();
 		}else if( cpu==ROUTERMAN ){
-			routerman.select(cursor,disk);
+			routerman.select(disk);
+			cursor=routerman.getCursor();
 		}else if( ( cpu==A2R && turn==BLACK ) || ( cpu==R2A && turn==WHITE )){
-			agent.select(cursor,disk);
+			agent.select(disk);
+			cursor=agent.getCursor();
 		}else if( ( cpu==A2R && turn==WHITE ) || ( cpu==R2A && turn==BLACK )){
-			routerman.select(cursor,disk);
+			routerman.select(disk);
+			cursor=routerman.getCursor();
 		}
 		Proc();
 	}
@@ -34,11 +38,11 @@ void Othello::timer(int dt){
 //石を置く際の共通処理
 void Othello::Proc(){
 	//出番のアクセス制御
-	//置ける場所かどうか
 	//アクセス制御
 	subtime=0;
 	if( stat != PLAY )return;
-	if( disk[cursor.x][cursor.y].putable[turn] == false )return;
+	//置ける場所かどうか
+	if( cursor.isOnboard()==false || disk[cursor.x][cursor.y].putable[turn] == false )return;
 	//石を置く
 	disk[cursor.x][cursor.y].place(turn);
 	before.x=cursor.x;
@@ -271,13 +275,13 @@ void Othello::init(){
 	}
 
 	if( cpu==AGENT ){
-		agent.select(cursor,disk);
+		agent.select(disk);
 	}else if( cpu==ROUTERMAN ){
-		routerman.select(cursor,disk);
+		routerman.select(disk);
 	}else if( ( cpu==A2R && turn==BLACK ) || ( cpu==R2A && turn==WHITE )){
-		agent.select(cursor,disk);
+		agent.select(disk);
 	}else if( ( cpu==A2R && turn==WHITE ) || ( cpu==R2A && turn==BLACK )){
-		routerman.select(cursor,disk);
+		routerman.select(disk);
 	}
 
 }

@@ -2,7 +2,7 @@
 #include "Machine.hpp"
 
 class Agent : public Machine{
+
 public:
-	void select(I2 &cursor,Disk disk[][8]);
-	
+	void select(Disk disk[][8]);
 };

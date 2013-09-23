@@ -8,7 +8,10 @@ class Machine{
 protected:
 	bool active;
 	bool color;
+	I2 cursor;
 public:
 	void setColor(bool color){this->color=color;}
-	void select(I2 &cursor,Disk disk[][8]);
+	void select(Disk disk[][8]);
+	I2 getCursor(){return cursor;}
+
 };

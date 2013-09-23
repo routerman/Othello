@@ -13,7 +13,7 @@ class Routerman : public Machine{
 public:
 	//‚»‚±‚ğ’u‚­‚Æ‘Šè‚ÉŠp‚ğ‚Æ‚ç‚ê‚é‚©’²‚×‚éŠÖ”
 	bool corner_lose(int x,int y,Disk s[][8]);
-	void select(I2 &cursor,Disk disk[][8]);
+	void select(Disk disk[][8]);
 	Routerman(){
 		active=false;
 		int init[8][8]={
