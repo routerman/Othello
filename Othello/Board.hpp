@@ -1,11 +1,14 @@
 #pragma once
 #include "GL.hpp"
 #include "I2.hpp"
+#include "Button.hpp"
 
 class Board{
 	
 	//disk<map>
 public:
+	Button reset,undo,play;
+	Button player[2];
 	void drow(unsigned time1){
 		/* ƒIƒZƒƒ‰ƒCƒ“ */
 		glColor3f(0,0,0);

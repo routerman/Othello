@@ -9,12 +9,9 @@
 
 
 class Othello : public GL{
-	Machine *machine[2];
-	bool active_routerman;
+
 	Board board;
-	Button reset,undo,play;
-	Button player[2];
-	//Mode mode;
+	Machine *machine[2];
 	Stat stat;
 	PlayerMode playermode[2];
 
@@ -24,6 +21,8 @@ class Othello : public GL{
 	int num_disk[2];
 	unsigned int time1,subtime;
 	stringstream message;
+protected:
+
 public:
 	Disk disk[8][8];
 	void init();

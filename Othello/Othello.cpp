@@ -13,23 +13,23 @@ void Othello::mouse(int cx,int cy){
 void Othello::mousebotton(int state ,int button, int cx,int cy){
 	if(  state != GLUT_DOWN ||  button != GLUT_LEFT_BUTTON  )return;
 	//ボタン
-	if( play.isPushed(cx,cy) ){
+	if( board.play.isPushed(cx,cy) ){
 		if( stat == READY )stat=PLAY;
 		else if( stat == PLAY )stat=PAUSE;
 		else if( stat == PAUSE )stat=PLAY;
-		play.selectLabel(stat);
-	}else if( reset.isPushed(cx,cy) ){
+		board.play.selectLabel(stat);
+	}else if( board.reset.isPushed(cx,cy) ){
 		delete othello;
 		othello = new Othello;
 	}
 	bool color=BLACK;
 	do{
-		if( player[color].isPushed(cx,cy) && stat==READY ){
+		if( board.player[color].isPushed(cx,cy) && stat==READY ){
 			playermode[color]=static_cast<PlayerMode>( playermode[color] + 1 );
 			if( playermode[color] > ROUTERMAN )playermode[color]=HUMAN;		
 			if( playermode[color] == AGENT )machine[color] =new Agent(color);
 			else if( playermode[color] == ROUTERMAN )machine[color] =new Routerman(color);
-			player[color].selectLabel(playermode[color]);
+			board.player[color].selectLabel(playermode[color]);
 			//machine[color]->setColor(color);
 		}
 	}while(color=!color, color==WHITE);//BLACK,WHITEの2つだけ。
@@ -115,11 +115,11 @@ void Othello::display(void){
 		}
 	}
 	//ボタン
-	player[BLACK].drow();
-	player[WHITE].drow();
-	play.drow();
+	board.player[BLACK].drow();
+	board.player[WHITE].drow();
+	board.play.drow();
 	//undo.drow();
-	reset.drow();
+	board.reset.drow();
 
 	board.drow(time1);
 	if( stat == PLAY ){
@@ -274,16 +274,16 @@ Othello::Othello(){
 	ration=1;
 	subtime=0;
 	init();
-	player[BLACK].set(590,790,200,260,0.1,0.1,0.1);
-	player[BLACK].setstring("1P : Human","1P : Agent","1P : Routerman");
-	player[WHITE].set(590,790,280,340,0.9,0.9,0.9);
-	player[WHITE].setstring("2P : Human","2P : Agent","2P : Routerman");
-	play.set(590,790,390,450,0.7,0.7,0.7);
-	play.setstring("Ready","Play","Pause");
-	//undo.set(590,790,460,520,0.7,0.7,0.7);
-	//undo.setstring("Undo","","");
-	reset.set(590,790,530,590,0.7,0.7,0.7);
-	reset.setstring("Reset","","");
+	board.player[BLACK].set(590,790,200,260,0.1,0.1,0.1);
+	board.player[BLACK].setstring("1P : Human","1P : Agent","1P : Routerman");
+	board.player[WHITE].set(590,790,280,340,0.9,0.9,0.9);
+	board.player[WHITE].setstring("2P : Human","2P : Agent","2P : Routerman");
+	board.play.set(590,790,390,450,0.7,0.7,0.7);
+	board.play.setstring("Ready","Play","Pause");
+	//board.undo.set(590,790,460,520,0.7,0.7,0.7);
+	//board.undo.setstring("Undo","","");
+	board.reset.set(590,790,530,590,0.7,0.7,0.7);
+	board.reset.setstring("Reset","","");
 }
 
 
