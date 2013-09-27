@@ -14,8 +14,8 @@ public:
 	//‚»‚±‚ð’u‚­‚Æ‘ŠŽè‚ÉŠp‚ð‚Æ‚ç‚ê‚é‚©’²‚×‚éŠÖ”
 	bool corner_lose(int x,int y,Disk s[][8]);
 	void select();
-	Routerman(){
-		active=false;
+	Routerman(bool color){
+		this->color=color;
 		int init[8][8]={
 			{9,2,8,5,5,8,2,9},
 			{2,1,4,7,7,4,1,2},

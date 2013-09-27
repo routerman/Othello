@@ -3,6 +3,7 @@
 #include "I2.hpp"
 
 class Board{
+	
 	//disk<map>
 public:
 	void drow(unsigned time1){

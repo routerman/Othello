@@ -9,16 +9,11 @@
 
 
 class Othello : public GL{
-	Routerman routerman;
-	Agent agent;
-
 	Machine *machine[2];
-
 	bool active_routerman;
-
 	Board board;
 	Button reset,undo,play;
-	Button player1,player2;
+	Button player[2];
 	//Mode mode;
 	Stat stat;
 	PlayerMode playermode[2];

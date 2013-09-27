@@ -21,23 +21,18 @@ void Othello::mousebotton(int state ,int button, int cx,int cy){
 	}else if( reset.isPushed(cx,cy) ){
 		delete othello;
 		othello = new Othello;
-	}else if( player1.isPushed(cx,cy) && stat==READY ){
-		playermode[BLACK]=static_cast<PlayerMode>( playermode[BLACK] + 1 );
-		if( playermode[BLACK] > ROUTERMAN )playermode[BLACK]=HUMAN;		
-		player1.selectLabel(playermode[BLACK]);
-	}else if( player2.isPushed(cx,cy) && stat==READY  ){
-		playermode[WHITE]=static_cast<PlayerMode>( playermode[WHITE] + 1 );
-		if( playermode[WHITE] > ROUTERMAN )playermode[WHITE]=HUMAN;	
-		player2.selectLabel(playermode[WHITE]);
 	}
-
-	/* setColor()ここらへんをちゃんとする必要がある */
-	if( playermode[BLACK] == AGENT )agent.setColor(BLACK);
-	else if( playermode[BLACK] == ROUTERMAN )routerman.setColor(BLACK);
-		
-	if( playermode[WHITE] == AGENT )agent.setColor(WHITE);
-	else if( playermode[WHITE] == ROUTERMAN )routerman.setColor(WHITE);
-
+	bool color=BLACK;
+	do{
+		if( player[color].isPushed(cx,cy) && stat==READY ){
+			playermode[color]=static_cast<PlayerMode>( playermode[color] + 1 );
+			if( playermode[color] > ROUTERMAN )playermode[color]=HUMAN;		
+			if( playermode[color] == AGENT )machine[color] =new Agent(color);
+			else if( playermode[color] == ROUTERMAN )machine[color] =new Routerman(color);
+			player[color].selectLabel(playermode[color]);
+			//machine[color]->setColor(color);
+		}
+	}while(color=!color, color==WHITE);//BLACK,WHITEの2つだけ。
 	//diskを置く
 	if( playermode[turn]==HUMAN ){
 		Proc();
@@ -51,22 +46,10 @@ void Othello::timer(int dt){
 		time1++;
 		subtime++;
 	}
-	/*
-	if( subtime>100 && playermode[turn] != HUMAN ){
+	if( subtime>10 && playermode[turn] != HUMAN  && stat==PLAY ){
 		machine[turn]->setDisk(disk);
 		machine[turn]->select();
 		cursor=machine[turn]->getCursor();
-	}*/
-	if( subtime>10 && playermode[turn] != HUMAN && stat==PLAY ){
-		if( playermode[turn] == AGENT ){
-			agent.setDisk(disk);
-			agent.select();
-			cursor=agent.getCursor();
-		}else if( playermode[turn] == ROUTERMAN ){
-			routerman.setDisk(disk);
-			routerman.select();
-			cursor=routerman.getCursor();
-		}
 		Proc();
 	}
 	glutPostRedisplay();
@@ -132,8 +115,8 @@ void Othello::display(void){
 		}
 	}
 	//ボタン
-	player1.drow();
-	player2.drow();
+	player[BLACK].drow();
+	player[WHITE].drow();
 	play.drow();
 	//undo.drow();
 	reset.drow();
@@ -268,8 +251,6 @@ void Othello::init(){
 	num_disk[BLACK]=num_disk[WHITE]=0;
 	cursor.set(-2,-2);
 	before.set(-2,-2);
-	agent.setColor(BLACK);
-	routerman.setColor(BLACK);
 }
 
 /* Construct with coping all disks infomation */
@@ -286,20 +267,23 @@ Othello::Othello(){
 	stat=READY;
 	playermode[BLACK]=HUMAN;
 	playermode[WHITE]=HUMAN;
+	machine[BLACK] = new Machine;
+	machine[WHITE] = new Machine;
+	machine[BLACK]->setColor(BLACK);
+	machine[WHITE]->setColor(WHITE);
 	ration=1;
 	subtime=0;
 	init();
-	player1.set(590,790,200,260,0.1,0.1,0.1);
-	player1.setstring("1P : Human","1P : Agent","1P : Routerman");
-	player2.set(590,790,280,340,0.9,0.9,0.9);
-	player2.setstring("2P : Human","2P : Agent","2P : Routerman");
+	player[BLACK].set(590,790,200,260,0.1,0.1,0.1);
+	player[BLACK].setstring("1P : Human","1P : Agent","1P : Routerman");
+	player[WHITE].set(590,790,280,340,0.9,0.9,0.9);
+	player[WHITE].setstring("2P : Human","2P : Agent","2P : Routerman");
 	play.set(590,790,390,450,0.7,0.7,0.7);
 	play.setstring("Ready","Play","Pause");
 	//undo.set(590,790,460,520,0.7,0.7,0.7);
 	//undo.setstring("Undo","","");
 	reset.set(590,790,530,590,0.7,0.7,0.7);
 	reset.setstring("Reset","","");
-	//p1=&agent;
 }
 
 
