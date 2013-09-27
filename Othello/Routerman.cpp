@@ -8,11 +8,12 @@
 */
 bool Routerman::corner_lose(int x,int y,Disk disk[][8]){
 	//copy disk
+	I2 temp(x,y);
 	Othello *test = new Othello(disk);
 	test->disk[x][y].setOnboard(true);//一時的に置いてみる。
 	test->disk[x][y].setColor(color); //自分の石
-	test->reverse(color,x,y);	//ひっくり返す
-	test->CanPut(!color);		//敵の置ける場所をチェックする
+	test->reverse(color,temp);	//ひっくり返す
+	test->ScanPutable(!color);		//敵の置ける場所をチェックする
 	//戻り値 取られる場合:true,取られない場合;false
 	bool putable=test->disk[0][0].isPutable(!color) ||
 			     test->disk[0][7].isPutable(!color) ||

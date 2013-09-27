@@ -19,6 +19,10 @@ public:
 		if( y<0 || y>7 )return false;
 		return true;
 	}
+	void operator+=(I2 a){
+		this->x+=a.x;
+		this->y+=a.y;
+	}
 };
 
 enum Mode{

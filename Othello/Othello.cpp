@@ -1,5 +1,15 @@
 #include "Othello.hpp"
+Othello *othello;
 
+
+/* mouse motion */
+void Othello::mouse(int cx,int cy){
+	//人間は自分のターンではないときはカーソルを動かさない。
+	if( ( mode==P2M && turn==BLACK ) || ( mode==M2P && turn==WHITE ) || ( mode==P2P ) ){
+		cursor.set(cx/(60*ration)-1,cy/(60*ration)-1);		
+	}
+}
+/* mouse click */
 void Othello::mousebotton(int state ,int button, int cx,int cy){
 	if(  state != GLUT_DOWN ||  button != GLUT_LEFT_BUTTON  )return;
 	if( ( ( mode==P2M && turn==BLACK ) || ( mode==M2P && turn==WHITE) || ( mode==P2P ) ) && ( stat == PLAY )){	
@@ -7,7 +17,7 @@ void Othello::mousebotton(int state ,int button, int cx,int cy){
 	}
 	glutPostRedisplay();
 }
-
+/* time event */
 void Othello::timer(int dt){
 	//グローバルタイム
 	if( stat == PLAY ){
@@ -38,7 +48,6 @@ void Othello::timer(int dt){
 	glutPostRedisplay();
 }
 
-
 //石を置く際の共通処理
 void Othello::Proc(){
 	//出番のアクセス制御
@@ -51,29 +60,28 @@ void Othello::Proc(){
 	disk[cursor.x][cursor.y].place(turn);
 	before=cursor;
 	//リバースする
-	reverse(turn,cursor.x,cursor.y);
+	reverse(turn,cursor);
+	
 	//敵が置けるかチェック
-	if( CanPut(!turn) ){
+	if(	ScanPutable(!turn),isAnyPutable(!turn) ){
 		turn=!turn;	//交代
-	}else if( !CanPut(turn) ){	//自分も置けない場合は終了
-		stat=GAMEOVER;
-		for(int i=0;i<8;i++){
-			for(int j=0;j<8;j++){
-				if( disk[i][j].isOnboard() ){
-					num_disk[disk[i][j].getColor()]++;
+	}else{
+		//敵が置けない場合自分に戻る
+		ScanPutable(turn);
+		if( isAnyPutable(turn) == false ){
+			//自分も置けない場合は終了
+			stat=GAMEOVER;
+			for(int i=0;i<8;i++){
+				for(int j=0;j<8;j++){
+					if( disk[i][j].isOnboard() ){
+						num_disk[disk[i][j].getColor()]++;
+					}
 				}
 			}
 		}
 	}
 }
 
-//マウスの動き
-void Othello::mouse(int cx,int cy){
-	//人間は自分のターンではないときはカーソルを動かさない。
-	if( ( mode==P2M && turn==BLACK ) || ( mode==M2P && turn==WHITE ) || ( mode==P2P ) ){
-		cursor.set(cx/(60*ration)-1,cy/(60*ration)-1);		
-	}
-}
 //キー入力
 void Othello::key(unsigned char k, int x, int y){
 	switch (k) {
@@ -81,6 +89,8 @@ void Othello::key(unsigned char k, int x, int y){
             exit(0);
             break;
         case 127: /* delete */
+			delete othello;
+			othello = new Othello;
             init();
 			stat=READY;
             break;
@@ -186,58 +196,68 @@ void Othello::display(void){
 	glutSwapBuffers();
 }
 
-bool Othello::line(bool color,int x,int y,int dx,int dy){
-	x+=dx;
-	y+=dy;
-	//while(異色の石が存在 && 盤内)
-	while( disk[x][y].getColor() != color && disk[x][y].isOnboard() && ( x>=0 && x<=7 ) && ( y>=0 && y<=7 ) ){
-		x+=dx;
-		y+=dy;
-		if( disk[x][y].getColor() == color && disk[x][y].isOnboard() && ( x>=0 && x<=7 ) && ( y>=0 && y<=7 ) )return true;
+void Othello::reverse(bool color,I2 position){
+	I2 hand=position;
+	for(int i=-1;i<=1;i++){
+		for(int j=-1;j<=1;j++){
+			I2 temp(i,j);
+			if( checkLine(color,position,temp) ){	//reverse可
+				do{
+					hand+=temp;
+					disk[hand.x][hand.y].setColor(color);	//reverse
+				}while(disk[hand.x+temp.x][hand.y+temp.y].getColor()!=color && hand.isOnboard() );	//同じ色の石が見つかるまで
+				hand=position;	//置いた場所に戻る
+			}
+		}
+	}
+}
+
+
+/* Is there any square to place? */
+bool Othello::isAnyPutable(bool color){
+	for(int x=0;x<8;x++){
+		for(int y=0;y<8;y++){
+			if( disk[x][y].isPutable(color) )return true;
+		}
 	}
 	return false;
 }
 
-void Othello::reverse(bool color,int cx ,int cy){
-	I2 vector(cx,cy);
-	for(int i=-1;i<=1;i++){
-		for(int j=-1;j<=1;j++){
-			if( line(color,cx,cy,i,j) ){	//reverse可
-				do{
-					vector.x+=i;
-					vector.y+=j;
-					disk[vector.x][vector.y].setColor(color);	//reverse
-				}while(disk[vector.x+i][vector.y+j].getColor()!=color && vector.isOnboard() );	//同じ色の石が見つかるまで
-				vector.x=cx;	//置いた場所に戻る
-				vector.y=cy;
-			}
-		}
+/* その方向に対してリバースできるか */
+bool Othello::checkLine(bool color,I2 r,I2 d){
+	if( d.x==0 && d.y==0 )return false;
+	r+=d;
+	//while(異色の石が存在 && 盤内)
+	while(  disk[r.x][r.y].getColor() != color && disk[r.x][r.y].isOnboard() && r.isOnboard() ){
+		r+=d;
+		if( disk[r.x][r.y].getColor() == color && disk[r.x][r.y].isOnboard() && r.isOnboard() )return true;
 	}
+	return false;
 }
 
-bool Othello::CanPut(bool color){
-	bool state=false;	//コードを短くするためだけの変数
-	bool putable=false;	//戻す用変数
-	for(signed int x=0;x<8;x++){
-		for(signed int y=0;y<8;y++){
-			if(disk[x][y].isOnboard())state=false;
-			else{
-				state=(
-                       line(color,x,y,+1, 0)||
-                       line(color,x,y,+1,+1)||
-                       line(color,x,y, 0,+1)||
-                       line(color,x,y,-1,+1)||
-                       line(color,x,y,-1, 0)||
-                       line(color,x,y,-1,-1)||
-                       line(color,x,y, 0,-1)||
-                       line(color,x,y,+1,-1)
-                       );
+/* Analyze a square which can be putable. */
+bool Othello::checkPutable(bool color,I2 position){
+	if( disk[position.x][position.y].isOnboard() )return false;
+	else{
+		for(int i=-1;i<=1;i++){
+			for(int j=-1;j<=1;j++){
+				I2 direction(i,j);
+				if( checkLine(color,position,direction) )return true;
 			}
-			disk[x][y].setPutable(color,state);
-			if(state)putable=true;	//置ける場所が一つでもあれば置ける。
 		}
 	}
-	return putable;
+	return false;
+}
+
+/* Check all square in board, and set putable value each square. */
+void Othello::ScanPutable(bool color){
+	for(int x=0;x<8;x++){
+		for(int y=0;y<8;y++){
+			//disk[x][y].checkPutable(color);
+			I2 position(x,y);
+			disk[position.x][position.y].setPutable(color, checkPutable(color,position) );
+		}
+	}
 }
 
 /* ゲーム単位の初期設定 */
@@ -253,7 +273,7 @@ void Othello::init(){
 	disk[4][3].place(WHITE);
 	disk[3][4].place(WHITE);
 	disk[4][4].place(BLACK);
-	CanPut(BLACK);
+	ScanPutable(BLACK);
 
 	turn=BLACK;
 	time1=subtime=0;
@@ -276,7 +296,7 @@ void Othello::init(){
 	}
 }
 
-
+/* Construct with coping all disks infomation */
 Othello::Othello( Disk disk[][8] ){
 	for(int m=0;m<8;m++){
 		for(int n=0;n<8;n++){
@@ -291,6 +311,7 @@ Othello::Othello(){
 	mode=P2M;
 	cpu=AGENT;
 	ration=1;
+	init();
 }
 
 
@@ -317,23 +338,22 @@ int main(int argc, char **argv){
 
 #else 
 
-
-Othello othello;
-void display(void){othello.display();}
-void mousebotton(int state ,int button, int cx,int cy){othello.mousebotton(state,button,cx,cy);}
-void mouse(int cx,int cy){othello.mouse(cx,cy);}
-void key(unsigned char k, int x, int y){othello.key(k,x,y);}
+void display(void){othello->display();}
+void mousebotton(int state ,int button, int cx,int cy){othello->mousebotton(state,button,cx,cy);}
+void mouse(int cx,int cy){othello->mouse(cx,cy);}
+void key(unsigned char k, int x, int y){othello->key(k,x,y);}
 void timer(int dt){
-	othello.timer(dt);
+	othello->timer(dt);
 	glutTimerFunc(dt,timer,10);
 }
-void reshape(GLsizei width, GLsizei height){othello.reshape(width,height);}
+void reshape(GLsizei width, GLsizei height){othello->reshape(width,height);}
  
 
 int main(int argc, char **argv){
+	othello = new Othello;
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
-	othello.CreateWindow(0,800,600,0,"othello");
+	othello->CreateWindow(0,800,600,0,"othello");
 	glClearColor( 0 , 0.7, 0, 1);//back ground color
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
@@ -343,6 +363,7 @@ int main(int argc, char **argv){
 	glutTimerFunc(0,timer,10);
     
 	glutMainLoop();
+	delete othello;
 	return 0;
 }
 #endif

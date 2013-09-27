@@ -42,9 +42,12 @@ public:
 	}
 
 	void Proc();
-	bool line(bool color,int x,int y,int dx,int dy);
-	void reverse(bool color,int cy ,int cx);
-	bool CanPut(bool color);
+	bool checkLine(bool color,I2 r,I2 d);
+	void reverse(bool color,I2 cursor);
+	void ScanPutable(bool color);
+	bool checkPutable(bool color,I2 position);
+	bool isAnyPutable(bool color);
+	
 	Othello();
 	Othello(Disk disk[][8]);
 };
