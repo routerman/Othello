@@ -41,7 +41,7 @@ public:
 		this->g=g;
 		this->b=b;
 	}
-	void selectLabel(int num){this->num_label=num;}
+	void selectLabel(int num){if( num>=0 && num<=2)this->num_label=num;}
 	bool isPushed(int x,int y){
 		if( x<left || x>right  )return false;
 		if( y<top  || y>bottom )return false;

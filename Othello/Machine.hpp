@@ -21,6 +21,8 @@ public:
 			}
 		}
 	}
-	I2 getCursor(){return cursor;}
+	I2 getCursor(){
+		std::cout<<cursor.x<<cursor.y<<std::endl;
+		return cursor;}
 
 };

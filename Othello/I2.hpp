@@ -25,14 +25,6 @@ public:
 	}
 };
 
-enum Mode{
-	P2P,
-	P2M,
-	M2P,
-	M2M,
-};
-
-
 enum Stat{
 	READY,
 	PLAY,
@@ -45,10 +37,8 @@ enum Stat{
 };
 
 
-enum Cpu{
-	NON,
+enum PlayerMode{
+	HUMAN,
 	AGENT,
 	ROUTERMAN,
-	A2R,
-	R2A
 };

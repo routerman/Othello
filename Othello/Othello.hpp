@@ -11,6 +11,7 @@
 class Othello : public GL{
 	Routerman routerman;
 	Agent agent;
+
 	Machine *machine[2];
 
 	bool active_routerman;
@@ -18,9 +19,10 @@ class Othello : public GL{
 	Board board;
 	Button reset,undo,play;
 	Button player1,player2;
-	Mode mode;
+	//Mode mode;
 	Stat stat;
-	Cpu cpu;
+	PlayerMode playermode[2];
+
 	I2 cursor;
 	I2 before;
 	bool turn;	//false:BLACK true:WHITE
