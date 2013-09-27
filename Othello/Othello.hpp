@@ -3,6 +3,7 @@
 #include "Agent.hpp"
 #include "GL.hpp"
 #include "Board.hpp"
+#include "Button.hpp"
 #include "Disk.hpp"
 #include "I2.hpp"
 
@@ -10,10 +11,13 @@
 class Othello : public GL{
 	Routerman routerman;
 	Agent agent;
+	Machine *machine[2];
 
 	bool active_routerman;
 
 	Board board;
+	Button reset,undo,play;
+	Button player1,player2;
 	Mode mode;
 	Stat stat;
 	Cpu cpu;

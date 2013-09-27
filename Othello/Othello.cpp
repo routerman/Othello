@@ -12,6 +12,15 @@ void Othello::mouse(int cx,int cy){
 /* mouse click */
 void Othello::mousebotton(int state ,int button, int cx,int cy){
 	if(  state != GLUT_DOWN ||  button != GLUT_LEFT_BUTTON  )return;
+	if( play.isPushed(cx,cy) ){
+		if( stat == READY )stat=PLAY;
+		else if( stat == PLAY )stat=PAUSE;
+		else if( stat == PAUSE )stat=PLAY;
+		play.selectLabel(stat);
+	}else if( reset.isPushed(cx,cy) ){
+		delete othello;
+		othello = new Othello;
+	}
 	if( ( ( mode==P2M && turn==BLACK ) || ( mode==M2P && turn==WHITE) || ( mode==P2P ) ) && ( stat == PLAY )){	
 		Proc();
 	}
@@ -26,6 +35,10 @@ void Othello::timer(int dt){
 	}
 	if(subtime<100)return;
 	if( ( ( mode==P2M && turn==WHITE ) || ( mode==M2P && turn==BLACK) || ( mode==M2M ) ) && ( stat == PLAY )){
+		//machine[turn]->setDisk(disk);
+		//machine[turn]->select();
+		//cursor=machine[turn]->getCursor();
+		
 		if( cpu==AGENT ){
 			agent.setDisk(disk);
 			agent.select();
@@ -91,21 +104,16 @@ void Othello::key(unsigned char k, int x, int y){
         case 127: /* delete */
 			delete othello;
 			othello = new Othello;
-            init();
-			stat=READY;
             break;
         case 13: /* ENTER */
-            if( stat == READY ){
-				init();
-				stat=PLAY;
-			}
+            if( stat == READY )stat=PLAY;
             break;
         case 'q':
             stat=GAMEOVER;
             break;
         case 'p':	//ポーズ
-            if(stat==PLAY)stat=POSE;
-			else if(stat==POSE)stat=PLAY;
+            if(stat==PLAY)stat=PAUSE;
+			else if(stat==PAUSE)stat=PLAY;
 
             break;
         case 'm':	//playmode切り替え
@@ -151,6 +159,12 @@ void Othello::display(void){
 			disk[i][j].drow(turn);
 		}
 	}
+	player1.drow();
+	player2.drow();
+	play.drow();
+	//undo.drow();
+	reset.drow();
+
 	board.drow(mode,stat,cpu,time1);
 	if( stat == PLAY ){
 		/* カーソル */
@@ -312,6 +326,17 @@ Othello::Othello(){
 	cpu=AGENT;
 	ration=1;
 	init();
+	player1.set(590,790,200,260,0.1,0.1,0.1);
+	player1.setstring("1P : Human","1P : Agent","1P : Routerman");
+	player2.set(590,790,280,340,0.9,0.9,0.9);
+	player2.setstring("2P : Human","2P : Agent","2P : Routerman");
+	play.set(590,790,390,450,0.7,0.7,0.7);
+	play.setstring("Ready","Play","Pause");
+	//undo.set(590,790,460,520,0.7,0.7,0.7);
+	//undo.setstring("UNDO","","");
+	reset.set(590,790,530,590,0.7,0.7,0.7);
+	reset.setstring("Reset","","");
+	//p1=&agent;
 }
 
 

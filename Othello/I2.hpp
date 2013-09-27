@@ -36,7 +36,7 @@ enum Mode{
 enum Stat{
 	READY,
 	PLAY,
-	POSE,
+	PAUSE,
 	WAIT,
 	TURN,
 	THINK,

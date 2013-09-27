@@ -27,10 +27,11 @@ public:
 		glEnd();
 		//時計
 		GL::DrawWatch(700,100,time1/60);  
+		/*
 		//stat
 		if(stat==POSE )GL::DrawString(600,250,"PAUSE");
 		else if(stat==READY )GL::DrawString(600,250,"READY");
-
+		
 		string p1("1P "),p2("2P ");
 		if( mode==P2P ){
 			p1+="HUMAN";
@@ -51,18 +52,18 @@ public:
 				p1+="ROUTERMAN";
 				p2+="AGENT";
 			}
-		}	
+		}
 		glColor3f(0,0,0);
 		GL::DrawString(580,300,p1);
 		glColor3f(1,1,1);
 		GL::DrawString(580,330,p2);
-
-		glColor3f(0,0,0);
+		*/
+		//glColor3f(0,0,0);
 		//キーマニュアル
-		GL::DrawString(580,430,"Pause:-p");
-		GL::DrawString(580,460,"Undo:-u");
-		GL::DrawString(580,490,"Gamemode:-m");
-		GL::DrawString(580,520,"selectCPU:-c");
-		GL::DrawString(580,550,"Exit:-Esc");
+		//GL::DrawString(580,430,"Pause:-p");
+		//GL::DrawString(580,460,"Undo:-u");
+		//GL::DrawString(580,490,"Gamemode:-m");
+		//GL::DrawString(580,520,"selectCPU:-c");
+		//GL::DrawString(580,550,"Exit:-Esc");
 	}
 };
