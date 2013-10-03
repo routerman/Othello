@@ -4,27 +4,36 @@ Othello *othello;
 
 /* mouse motion */
 void Othello::mouse(int cx,int cy){
+	/* 位置情報を補正してcursorに代入。cursorからcursor_squareを求める。 */
+	//補正関数()
+	cursor_adjust(cx,cy);
+	std::cout<<cursor.x<<","<<cursor.y<<"ration="<<ration<<std::endl;
 	//人間は自分のターンではないときはカーソルを動かさない
 	if( playermode[turn]==HUMAN ){
-		cursor.set(cx/(60*ration)-1,cy/(60*ration)-1);		
+		//cursor_square.set(cursor.x/(60*ration)-1,cursor.y/(60*ration)-1);		
+		cursor_square.set(cursor.x/60-1,cursor.y/60-1);		
 	}
 }
 /* mouse click */
 void Othello::mousebotton(int state ,int button, int cx,int cy){
 	if(  state != GLUT_DOWN ||  button != GLUT_LEFT_BUTTON  )return;
+	//補正関数()
+	cursor_adjust(cx,cy);
+	
+
 	//ボタン
-	if( board.play.isPushed(cx,cy) ){
+	if( board.play.isPushed(cursor) ){
 		if( stat == READY )stat=PLAY;
 		else if( stat == PLAY )stat=PAUSE;
 		else if( stat == PAUSE )stat=PLAY;
 		board.play.selectLabel(stat);
-	}else if( board.reset.isPushed(cx,cy) ){
+	}else if( board.reset.isPushed(cursor) ){
 		delete othello;
 		othello = new Othello;
 	}
 	bool color=BLACK;
 	do{
-		if( board.player[color].isPushed(cx,cy) && stat==READY ){
+		if( board.player[color].isPushed(cursor) && stat==READY ){
 			playermode[color]=static_cast<PlayerMode>( playermode[color] + 1 );
 			if( playermode[color] > ROUTERMAN )playermode[color]=HUMAN;		
 			if( playermode[color] == AGENT )machine[color] =new Agent(color);
@@ -35,6 +44,7 @@ void Othello::mousebotton(int state ,int button, int cx,int cy){
 	}while(color=!color, color==WHITE);//BLACK,WHITEの2つだけ。
 	//diskを置く
 	if( playermode[turn]==HUMAN ){
+		cursor_square.set(cursor.x/60-1,cursor.y/60-1);		
 		Proc();
 	}
 	glutPostRedisplay();
@@ -49,7 +59,7 @@ void Othello::timer(int dt){
 	if( subtime>10 && playermode[turn] != HUMAN  && stat==PLAY ){
 		machine[turn]->setDisk(disk);
 		machine[turn]->select();
-		cursor=machine[turn]->getCursor();
+		cursor_square=machine[turn]->getCursor();
 		Proc();
 	}
 	glutPostRedisplay();
@@ -62,12 +72,12 @@ void Othello::Proc(){
 	subtime=0;
 	if( stat != PLAY )return;
 	//置ける場所かどうか
-	if( cursor.isOnboard()==false || disk[cursor.x][cursor.y].isPutable(turn) == false )return;
+	if( cursor_square.isOnboard()==false || disk[cursor_square.x][cursor_square.y].isPutable(turn) == false )return;
 	//石を置く
-	disk[cursor.x][cursor.y].place(turn);
-	before=cursor;
+	disk[cursor_square.x][cursor_square.y].place(turn);
+	before_square=cursor_square;
 	//リバースする
-	reverse(turn,cursor);
+	reverse(turn,cursor_square);
 	
 	//敵が置けるかチェック
 	if(	ScanPutable(!turn),isAnyPutable(!turn) ){
@@ -107,7 +117,7 @@ void Othello::display(void){
 	if( stat == PLAY ){
 		/* 置いた場所 */
 		glColor3f(1,0,0);
-		DrawSquare(60*(before.x+1),60*(before.y+1));
+		DrawSquare(60*(before_square.x+1),60*(before_square.y+1));
 	}
 	for(int i=0;i<8;i++){
 		for(int j=0;j<8;j++){
@@ -126,7 +136,7 @@ void Othello::display(void){
 		/* カーソル */
 		if(turn==WHITE)glColor3f(1,1,1);
 		else glColor3f(0,0,0);
-		if( cursor.isOnboard() && disk[cursor.x][cursor.y].isPutable(turn) )DrawCircle(90+cursor.x*60,90+cursor.y*60);
+		if( cursor_square.isOnboard() && disk[cursor_square.x][cursor_square.y].isPutable(turn) )DrawCircle(90+cursor_square.x*60,90+cursor_square.y*60);
 	}else if( stat == GAMEOVER ){
 		/* ゲーム終了 */
 		if( num_disk[BLACK] <= num_disk[WHITE] ){
@@ -151,6 +161,7 @@ void Othello::display(void){
 		DrawString(130,300,message.str());
 	}else if( stat == READY ){
 		/* モード設定 */
+		/*
 		glColor3f(1,1,1);
 		glBegin(GL_QUADS);
 		glVertex2i(100,360);
@@ -161,6 +172,7 @@ void Othello::display(void){
 		glColor3f(0,0,0);
 		DrawString(130,310,"Press 'm' and choose gamemode,");
 		DrawString(130,340,"Press 'Play' to start GAME!");
+		*/
 	}
 	/* After Draw */
 	glutSwapBuffers();
@@ -249,8 +261,8 @@ void Othello::init(){
 	turn=BLACK;
 	time1=subtime=0;
 	num_disk[BLACK]=num_disk[WHITE]=0;
-	cursor.set(-2,-2);
-	before.set(-2,-2);
+	cursor_square.set(-2,-2);
+	before_square.set(-2,-2);
 }
 
 /* Construct with coping all disks infomation */
@@ -272,6 +284,7 @@ Othello::Othello(){
 	machine[BLACK]->setColor(BLACK);
 	machine[WHITE]->setColor(WHITE);
 	ration=1;
+	calib=0;
 	subtime=0;
 	init();
 	board.player[BLACK].set(590,790,200,260,0.1,0.1,0.1);
@@ -311,7 +324,9 @@ int main(int argc, char **argv){
 #else 
 
 void display(void){othello->display();}
-void mousebotton(int state ,int button, int cx,int cy){othello->mousebotton(state,button,cx,cy);}
+void mousebotton(int state ,int button, int cx,int cy){
+	othello->mousebotton(state,button,cx,cy);
+}
 void mouse(int cx,int cy){othello->mouse(cx,cy);}
 void key(unsigned char k, int x, int y){othello->key(k,x,y);}
 void timer(int dt){

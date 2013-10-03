@@ -20,6 +20,7 @@ protected:
 	int time;
 	int width;
 	int height;
+	int calib;
 	double ration;
 	static string title;
 	//int key;

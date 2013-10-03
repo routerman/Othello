@@ -16,7 +16,9 @@ class Othello : public GL{
 	PlayerMode playermode[2];
 
 	I2 cursor;
-	I2 before;
+	I2 cursor_square;
+	I2 before_square;
+
 	bool turn;	//false:BLACK true:WHITE
 	int num_disk[2];
 	unsigned int time1,subtime;
@@ -25,6 +27,12 @@ protected:
 
 public:
 	Disk disk[8][8];
+	void cursor_adjust(int cx,int cy){
+		//cursor_square.set(cursor.x/(60*ration)-1,cursor.y/(60*ration)-1);		
+
+		cursor.x=cx/ration;
+		cursor.y=cy/ration-calib;
+	}
 	void init();
 	void mousebotton(int state ,int button, int cx,int cy);
 	void mouse(int cx,int cy);
@@ -37,6 +45,7 @@ public:
 			glViewport( 0, 0, height*4/3, height );
 		}else{
 			ration=(double)width/800;
+			calib=height-600*ration;
 			glViewport( 0, 0, width, width*3/4 );
 		}
 	}

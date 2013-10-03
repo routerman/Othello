@@ -19,8 +19,6 @@ public:
 			}
 		}
 	}
-	I2 getCursor(){
-		std::cout<<cursor.x<<cursor.y<<std::endl;
-		return cursor;}
+	I2 getCursor(){return cursor;}
 	//Machine(bool color){this->color=color;}
 };

@@ -42,9 +42,9 @@ public:
 		this->b=b;
 	}
 	void selectLabel(int num){if( num>=0 && num<=2)this->num_label=num;}
-	bool isPushed(int x,int y){
-		if( x<left || x>right  )return false;
-		if( y<top  || y>bottom )return false;
+	bool isPushed(I2 cursor){
+		if( cursor.x<left || cursor.x>right  )return false;
+		if( cursor.y<top  || cursor.y>bottom )return false;
 		return true;
 	}
 	Button(){
