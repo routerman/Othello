@@ -40,5 +40,8 @@ public:
 	static void DrawCircle(int x, int y);
 	static void DrawSquare( int x, int y);
 	static void DrawWatch(int x,int y,float t);
-	GL(){}
+	GL(){
+		
+	
+	}
 };

@@ -17,12 +17,13 @@ class Othello : public GL{
 
 	I2 cursor;
 	I2 cursor_square;
-	I2 before_square;
+	I2 before_square[2];
 
 	bool turn;	//false:BLACK true:WHITE
 	int num_disk[2];
 	unsigned int time1,subtime;
 	stringstream message;
+	Disk before_disk[8][8][2];
 protected:
 
 public:
@@ -47,6 +48,20 @@ public:
 			ration=(double)width/800;
 			calib=height-600*ration;
 			glViewport( 0, 0, width, width*3/4 );
+		}
+	}
+	void save(bool turn){
+		for(int i=0;i<8;i++){
+			for(int j=0;j<8;j++){
+				this->before_disk[i][j][turn] = this->disk[i][j];
+			}
+		}
+	}
+	void undo(bool turn){
+		for(int i=0;i<8;i++){
+			for(int j=0;j<8;j++){
+				this->disk[i][j] = this->before_disk[i][j][turn];
+			}
 		}
 	}
 

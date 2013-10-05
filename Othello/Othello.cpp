@@ -7,7 +7,7 @@ void Othello::mouse(int cx,int cy){
 	/* 位置情報を補正してcursorに代入。cursorからcursor_squareを求める。 */
 	//補正関数()
 	cursor_adjust(cx,cy);
-	std::cout<<cursor.x<<","<<cursor.y<<"ration="<<ration<<std::endl;
+	//std::cout<<cursor.x<<","<<cursor.y<<"ration="<<ration<<std::endl;
 	//人間は自分のターンではないときはカーソルを動かさない
 	if( playermode[turn]==HUMAN ){
 		//cursor_square.set(cursor.x/(60*ration)-1,cursor.y/(60*ration)-1);		
@@ -30,6 +30,8 @@ void Othello::mousebotton(int state ,int button, int cx,int cy){
 	}else if( board.reset.isPushed(cursor) ){
 		delete othello;
 		othello = new Othello;
+	}else if( board.undo.isPushed(cursor) ){
+		undo(turn);
 	}
 	bool color=BLACK;
 	do{
@@ -56,7 +58,7 @@ void Othello::timer(int dt){
 		time1++;
 		subtime++;
 	}
-	if( subtime>10 && playermode[turn] != HUMAN  && stat==PLAY ){
+	if( subtime>100 && playermode[turn] != HUMAN  && stat==PLAY ){
 		machine[turn]->setDisk(disk);
 		machine[turn]->select();
 		cursor_square=machine[turn]->getCursor();
@@ -73,9 +75,13 @@ void Othello::Proc(){
 	if( stat != PLAY )return;
 	//置ける場所かどうか
 	if( cursor_square.isOnboard()==false || disk[cursor_square.x][cursor_square.y].isPutable(turn) == false )return;
+	//置く前にUNDO用に保存する
+	save(turn);
+	before_square[turn]=cursor_square;
+
 	//石を置く
 	disk[cursor_square.x][cursor_square.y].place(turn);
-	before_square=cursor_square;
+
 	//リバースする
 	reverse(turn,cursor_square);
 	
@@ -117,7 +123,7 @@ void Othello::display(void){
 	if( stat == PLAY ){
 		/* 置いた場所 */
 		glColor3f(1,0,0);
-		DrawSquare(60*(before_square.x+1),60*(before_square.y+1));
+		DrawSquare(60*(before_square[!turn].x+1),60*(before_square[!turn].y+1));
 	}
 	for(int i=0;i<8;i++){
 		for(int j=0;j<8;j++){
@@ -128,7 +134,7 @@ void Othello::display(void){
 	board.player[BLACK].drow();
 	board.player[WHITE].drow();
 	board.play.drow();
-	//undo.drow();
+	board.undo.drow();
 	board.reset.drow();
 
 	board.drow(time1);
@@ -257,12 +263,13 @@ void Othello::init(){
 	disk[4][4].place(BLACK);
 	ScanPutable(BLACK);
 	ScanPutable(WHITE);
-
+	save(BLACK);
+	save(WHITE);
 	turn=BLACK;
 	time1=subtime=0;
 	num_disk[BLACK]=num_disk[WHITE]=0;
 	cursor_square.set(-2,-2);
-	before_square.set(-2,-2);
+	before_square[WHITE].set(-2,-2);
 }
 
 /* Construct with coping all disks infomation */
@@ -293,8 +300,8 @@ Othello::Othello(){
 	board.player[WHITE].setstring("2P : Human","2P : Agent","2P : Routerman");
 	board.play.set(590,790,390,450,0.7,0.7,0.7);
 	board.play.setstring("Ready","Play","Pause");
-	//board.undo.set(590,790,460,520,0.7,0.7,0.7);
-	//board.undo.setstring("Undo","","");
+	board.undo.set(590,790,460,520,0.7,0.7,0.7);
+	board.undo.setstring("Undo","","");
 	board.reset.set(590,790,530,590,0.7,0.7,0.7);
 	board.reset.setstring("Reset","","");
 }
