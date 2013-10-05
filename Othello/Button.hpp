@@ -18,8 +18,8 @@ public:
 			glVertex2i((GLint)right,(GLint)bottom);
 			glVertex2i((GLint)left ,(GLint)bottom);
 		glEnd();
-		if(active)glColor3f(r+0.1,g+0.1,b+0.1);
-		else glColor3f(r-0.1,g-0.1,b-0.1);
+		if(active)glColor3f(r-0.1,g-0.1,b-0.1);
+		else glColor3f(r+0.1,g+0.1,b+0.1);
 		glBegin(GL_POLYGON);
 			glVertex2i((GLint)left+5 ,(GLint)top+5);
 			glVertex2i((GLint)right-5,(GLint)top+5);
@@ -47,10 +47,12 @@ public:
 	bool isPushed(I2 cursor){
 		if( cursor.x<left || cursor.x>right  )return false;
 		if( cursor.y<top  || cursor.y>bottom )return false;
-		active=!active;
 		return true;
 	}
+	void setActive(bool active){this->active=active;}
+	bool isActive(){return this->active;}
 	Button(){
 		num_label=0;
+		active=false;
 	}
 };

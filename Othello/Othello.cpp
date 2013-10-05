@@ -22,17 +22,14 @@ void Othello::mousebotton(int state ,int button, int cx,int cy){
 	
 
 	//ボタン
-	if( board.play.isPushed(cursor) ){
-		if( stat == READY )stat=PLAY;
-		else if( stat == PLAY )stat=PAUSE;
-		else if( stat == PAUSE )stat=PLAY;
-		board.play.selectLabel(stat);
+	board.button_proc(stat,cursor);
+	if( board.undo.isPushed(cursor) ){
+		undo(turn);
 	}else if( board.reset.isPushed(cursor) ){
 		delete othello;
 		othello = new Othello;
-	}else if( board.undo.isPushed(cursor) ){
-		undo(turn);
 	}
+
 	bool color=BLACK;
 	do{
 		if( board.player[color].isPushed(cursor) && stat==READY ){
@@ -44,6 +41,7 @@ void Othello::mousebotton(int state ,int button, int cx,int cy){
 			//machine[color]->setColor(color);
 		}
 	}while(color=!color, color==WHITE);//BLACK,WHITEの2つだけ。
+
 	//diskを置く
 	if( playermode[turn]==HUMAN ){
 		cursor_square.set(cursor.x/60-1,cursor.y/60-1);		
@@ -250,6 +248,35 @@ void Othello::ScanPutable(bool color){
 
 /* ゲーム単位の初期設定 */
 void Othello::init(){
+
+}
+
+/* Construct with coping all disks infomation */
+Othello::Othello( Disk disk[][8] ){
+	for(int m=0;m<8;m++){
+		for(int n=0;n<8;n++){
+			this->disk[m][n]=disk[m][n];
+		}
+	}
+}
+
+/* 起動後、最初に呼び出される。*/
+Othello::Othello(){
+	//game init
+	stat=READY;
+	playermode[BLACK]=HUMAN;
+	playermode[WHITE]=HUMAN;
+	machine[BLACK] = new Machine;
+	machine[WHITE] = new Machine;
+	machine[BLACK]->setColor(BLACK);
+	machine[WHITE]->setColor(WHITE);
+	ration=1;
+	calib=0;
+	turn=BLACK;
+	time1=subtime=0;
+	num_disk[BLACK]=num_disk[WHITE]=0;
+	init();
+	//Disk
 	for(int m=0;m<8;m++){
 		for(int n=0;n<8;n++){
 			disk[m][n].init_postion(m,n);
@@ -265,35 +292,9 @@ void Othello::init(){
 	ScanPutable(WHITE);
 	save(BLACK);
 	save(WHITE);
-	turn=BLACK;
-	time1=subtime=0;
-	num_disk[BLACK]=num_disk[WHITE]=0;
 	cursor_square.set(-2,-2);
 	before_square[WHITE].set(-2,-2);
-}
-
-/* Construct with coping all disks infomation */
-Othello::Othello( Disk disk[][8] ){
-	for(int m=0;m<8;m++){
-		for(int n=0;n<8;n++){
-			this->disk[m][n]=disk[m][n];
-		}
-	}
-}
-
-/* 起動後、最初に呼び出される。*/
-Othello::Othello(){
-	stat=READY;
-	playermode[BLACK]=HUMAN;
-	playermode[WHITE]=HUMAN;
-	machine[BLACK] = new Machine;
-	machine[WHITE] = new Machine;
-	machine[BLACK]->setColor(BLACK);
-	machine[WHITE]->setColor(WHITE);
-	ration=1;
-	calib=0;
-	subtime=0;
-	init();
+	//button
 	board.player[BLACK].set(590,790,200,260,0.1,0.1,0.1);
 	board.player[BLACK].setstring("1P : Human","1P : Agent","1P : Routerman");
 	board.player[WHITE].set(590,790,280,340,0.9,0.9,0.9);
@@ -304,6 +305,7 @@ Othello::Othello(){
 	board.undo.setstring("Undo","","");
 	board.reset.set(590,790,530,590,0.7,0.7,0.7);
 	board.reset.setstring("Reset","","");
+	board.reset.setActive(true);
 }
 
 

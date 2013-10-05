@@ -2,6 +2,9 @@
 #include "GL.hpp"
 #include "I2.hpp"
 #include "Button.hpp"
+//#include "Othello.hpp"
+
+//extern Othello *othello;
 
 class Board{
 	
@@ -9,6 +12,18 @@ class Board{
 public:
 	Button reset,undo,play;
 	Button player[2];
+
+	void button_proc(Stat stat,I2 cursor){
+		if( play.isPushed(cursor) ){
+			if( stat == READY )stat=PLAY;
+			else if( stat == PLAY )stat=PAUSE;
+			else if( stat == PAUSE )stat=PLAY;
+			play.selectLabel(stat);
+			if( stat == READY )reset.setActive(true);
+			else reset.setActive(false);
+		}
+	}
+
 	void drow(unsigned time1){
 		/* ÉIÉZÉçÉâÉCÉì */
 		glColor3f(0,0,0);
