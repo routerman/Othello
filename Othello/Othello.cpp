@@ -26,8 +26,11 @@ void Othello::mousebotton(int state ,int button, int cx,int cy){
 	if( board.undo.isPushed(cursor) ){
 		undo(turn);
 	}else if( board.reset.isPushed(cursor) ){
+		int w = this->width;
+		int h = this->height;
 		delete othello;
 		othello = new Othello;
+		reshape(w,h);
 	}
 
 	bool color=BLACK;
@@ -56,7 +59,7 @@ void Othello::timer(int dt){
 		time1++;
 		subtime++;
 	}
-	if( subtime>60 && playermode[turn] != HUMAN  && stat==PLAY ){
+	if( subtime>30 && playermode[turn] != HUMAN  && stat==PLAY ){
 		machine[turn]->setDisk(disk);
 		machine[turn]->select();
 		cursor_square=machine[turn]->getCursor();
@@ -163,6 +166,16 @@ void Othello::display(void){
 			glColor3f(1,1,1);
 		}
 		DrawString(130,300,message.str());
+		if( playermode[BLACK]!=HUMAN && playermode[WHITE]!=HUMAN ){
+			int w = this->width;
+			int h = this->height;
+			delete othello;
+			othello = new Othello;
+			reshape(w,h);
+			playermode[BLACK]=AGENT;
+			playermode[WHITE]=ROUTERMAN;
+		}
+
 	}else if( stat == READY ){
 		/* ƒ‚[ƒhÝ’è */
 		/*
@@ -266,6 +279,7 @@ Othello::Othello(){
 	stat=READY;
 	playermode[BLACK]=HUMAN;
 	playermode[WHITE]=HUMAN;
+
 	machine[BLACK] = new Machine;
 	machine[WHITE] = new Machine;
 	machine[BLACK]->setColor(BLACK);

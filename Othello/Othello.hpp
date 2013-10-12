@@ -9,7 +9,7 @@
 
 
 class Othello : public GL{
-
+	int width,height;
 	Board board;
 	Machine *machine[2];
 	Stat stat;
@@ -41,6 +41,8 @@ public:
 	void timer(int dt);
 	void display();
 	void reshape(GLsizei width, GLsizei height){
+		this->width=width;
+		this->height=height;
 		if( width > height*4/3 ){
 			ration=(double)height/600;
 			glViewport( 0, 0, height*4/3, height );
