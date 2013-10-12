@@ -56,7 +56,7 @@ void Othello::timer(int dt){
 		time1++;
 		subtime++;
 	}
-	if( subtime>100 && playermode[turn] != HUMAN  && stat==PLAY ){
+	if( subtime>60 && playermode[turn] != HUMAN  && stat==PLAY ){
 		machine[turn]->setDisk(disk);
 		machine[turn]->select();
 		cursor_square=machine[turn]->getCursor();
@@ -300,7 +300,7 @@ Othello::Othello(){
 	board.player[WHITE].set(590,790,280,340,0.9,0.9,0.9);
 	board.player[WHITE].setstring("2P : Human","2P : Agent","2P : Routerman");
 	board.play.set(590,790,390,450,0.7,0.7,0.7);
-	board.play.setstring("Ready","Play","Pause");
+	board.play.setstring("Play","Pause","Continue");
 	board.undo.set(590,790,460,520,0.7,0.7,0.7);
 	board.undo.setstring("Undo","","");
 	board.reset.set(590,790,530,590,0.7,0.7,0.7);

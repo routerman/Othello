@@ -13,7 +13,7 @@ public:
 	Button reset,undo,play;
 	Button player[2];
 
-	void button_proc(Stat stat,I2 cursor){
+	void button_proc(Stat &stat,I2 cursor){
 		if( play.isPushed(cursor) ){
 			if( stat == READY )stat=PLAY;
 			else if( stat == PLAY )stat=PAUSE;
