@@ -10,3 +10,18 @@ Second one is Agent which I programed as well, but he is weeker than Routerman n
 So you can download source code and refine the algorithm of Agent.
 Beat Routerman!
 
+
+You have to install 
+
+
+This program can be also used in Mac and Linux.
+You have to install some packages for OpenGL and development tools, such as gcc-c++,make,etc,,
+
+@CentOS
+# yum install gcc-c++ make freeglut freeglut-devel
+
+@Ubuntu
+# apt-get install freeglut3-dev libglew1.5-dev
+
+@Mac
+nothing you have to install.
