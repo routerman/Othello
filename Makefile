@@ -1,6 +1,6 @@
 TARGET=othello
 CC=g++
-OPT=-Wall -g
+OPT=-Wall -g -Wno-deprecated
 INC=
 #LIB=-lglut -lGLU -lGL
 FRAMEWORK=-framework OpenGL -framework GLUT
