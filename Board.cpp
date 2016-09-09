@@ -12,7 +12,7 @@ void Board::button_proc(int &stat,I2 cursor){
     }
 }
 
-void Board::drow(unsigned time1){
+void Board::draw(unsigned time1){
     /* オセロライン */
     glColor3f(0,0,0);
     for(int i=1;i<=9;i++){

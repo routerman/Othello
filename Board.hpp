@@ -10,5 +10,5 @@ public:
 	Button reset,undo,play;
 	Button player[2];
     void button_proc(int &stat,I2 cursor);
-    void drow(unsigned time1);
+    void draw(unsigned time1);
 };

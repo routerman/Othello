@@ -128,17 +128,17 @@ void Othello::display(void){
 	}
 	for(int i=0;i<8;i++){
 		for(int j=0;j<8;j++){
-			disk[i][j].drow(turn);
+			disk[i][j].draw(turn);
 		}
 	}
 	//ボタン
-	board.player[BLACK].drow();
-	board.player[WHITE].drow();
-	board.play.drow();
-	board.undo.drow();
-	board.reset.drow();
+	board.player[BLACK].draw();
+	board.player[WHITE].draw();
+	board.play.draw();
+	board.undo.draw();
+	board.reset.draw();
 
-	board.drow(time1);
+	board.draw(time1);
 	if( stat == PLAY ){
 		/* カーソル */
 		if(turn==WHITE)glColor3f(1,1,1);

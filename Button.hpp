@@ -9,7 +9,7 @@ class Button{
 	string label[3];
 	int num_label;
 public:
-	void drow(){	
+	void draw(){	
 		glColor3f(r,g,b);
 		glBegin(GL_POLYGON);
 			glVertex2i((GLint)left ,(GLint)top);

@@ -13,7 +13,7 @@ public:
 		putable[0]=putable[1]=false;
 		this->color=color;
 	}
-	void drow(bool turn){
+	void draw(bool turn){
 			if( onboard ){
 				if( color )glColor3f(1,1,1);
 				else glColor3f(0,0,0);
