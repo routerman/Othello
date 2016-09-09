@@ -1,6 +1,6 @@
 #pragma once
-#include "GL.hpp"
-#include "I2.hpp"
+#include "gl.h"
+#include "i2.h"
 class Disk{
 	I2 position;
 	bool onboard;			//既に置いてあるかどうか

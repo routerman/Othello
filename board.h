@@ -1,7 +1,7 @@
 #pragma once
-#include "GL.hpp"
-#include "I2.hpp"
-#include "Button.hpp"
+#include "gl.h"
+#include "i2.h"
+#include "button.h"
 
 class Board{
 	

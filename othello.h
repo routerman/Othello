@@ -1,11 +1,11 @@
 #pragma once
-#include "Routerman.hpp"
-#include "Agent.hpp"
-#include "GL.hpp"
-#include "Board.hpp"
-#include "Button.hpp"
-#include "Disk.hpp"
-#include "I2.hpp"
+#include "routerman.h"
+#include "agent.h"
+#include "gl.h"
+#include "board.h"
+#include "button.h"
+#include "disk.h"
+#include "i2.h"
 
 enum Stat{
 	READY,

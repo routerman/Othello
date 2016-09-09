@@ -1,4 +1,4 @@
-#include "Othello.hpp"
+#include "othello.h"
 Othello *othello;
 
 

@@ -1,6 +1,6 @@
 //hppファイルでインクルードするとC2146問題が発生する。
-#include "Othello.hpp"
-#include "Routerman.hpp"
+#include "othello.h"
+#include "routerman.h"
 
 /*
 一手先を読み、角が取られないかチェックする。

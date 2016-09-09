@@ -1,7 +1,7 @@
 #pragma once
-#include "Machine.hpp"
-#include "Disk.hpp"
-#include "I2.hpp"
+#include "machine.h"
+#include "disk.h"
+#include "i2.h"
 
 #define BLACK false
 #define WHITE true

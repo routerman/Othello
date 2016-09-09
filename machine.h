@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Disk.hpp"
-#include "I2.hpp"
+#include "disk.h"
+#include "i2.h"
 
 /* 敵コンピュータの素となるクラス */
 class Machine{

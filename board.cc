@@ -1,5 +1,5 @@
-#include "Board.hpp"
-#include "Othello.hpp"
+#include "board.h"
+#include "othello.h"
 
 void Board::button_proc(int &stat,I2 cursor){
     if( play.isPushed(cursor) ){

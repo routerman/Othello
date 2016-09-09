@@ -5,16 +5,16 @@ INC=
 #LIB=-lglut -lGLU -lGL
 FRAMEWORK=-framework OpenGL -framework GLUT
 -include makefile.opt
-.SUFFIXES:.cpp .hpp .c .o .h
+.SUFFIXES:.cc .c .o .h
 
-SRC=$(shell ls *.cpp)
-HED=$(shell ls *.hpp)
-OBJ=$(SRC:.cpp=.o)
+SRC=$(shell ls *.cc)
+HED=$(shell ls *.h)
+OBJ=$(SRC:.cc=.o)
 
 all: $(TARGET)
 $(TARGET): $(OBJ)
 	$(CC) $(OPT) -o $(TARGET) $(OBJ) $(FRAMEWORK)
-.cpp.o:
+.cc.o:
 	$(CC) $(OPT) -c $< $(INC)
 dep:
 	g++ -MM -MG $(SRC) >makefile.depend

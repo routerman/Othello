@@ -1,6 +1,6 @@
 #pragma once
-#include "I2.hpp"
-#include "GL.hpp"
+#include "i2.h"
+#include "gl.h"
 
 class Button{
 	bool active;
