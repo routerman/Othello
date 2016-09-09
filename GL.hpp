@@ -5,13 +5,20 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <GL/glut.h>
-#define M_PI 3.1415
+#ifdef _WIN32
+	#include <windows.h>
+	#include <GL/gl.h>
+	#include <GL/glu.h>
+	#include <GL/glut.h>
+#elif defined __unix__
+	#include <GL/glut.h>
+#elif defined __APPLE__
+	#include <OpenGL/gl.h>
+	#include <GLUT/glut.h>
+#endif
 
-/*
-reshape‘Î‰ž
-private‰»
-*/
+//#define M_PI 3.1415
+
 using namespace std;
 
 class GL{

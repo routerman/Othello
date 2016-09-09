@@ -2,7 +2,8 @@ TARGET=othello
 CC=g++
 OPT=-Wall -g
 INC=
-LIB=-lglut -lGLU -lGL
+#LIB=-lglut -lGLU -lGL
+FRAMEWORK=-framework OpenGL -framework GLUT
 -include makefile.opt
 .SUFFIXES:.cpp .hpp .c .o .h
 
@@ -12,7 +13,7 @@ OBJ=$(SRC:.cpp=.o)
 
 all: $(TARGET)
 $(TARGET): $(OBJ)
-	$(CC) $(OPT) -o $(TARGET) $(OBJ) $(LIB)
+	$(CC) $(OPT) -o $(TARGET) $(OBJ) $(FRAMEWORK)
 .cpp.o:
 	$(CC) $(OPT) -c $< $(INC)
 dep:

@@ -3,7 +3,6 @@
 #include "GL.hpp"
 
 class Button{
-	bool flag;
 	bool active;
 	int left,right,top,bottom;
 	float r,g,b;
