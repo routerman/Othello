@@ -7,6 +7,11 @@
 #include "Disk.hpp"
 #include "I2.hpp"
 
+enum PlayerMode{
+	HUMAN,
+	AGENT,
+	ROUTERMAN,
+};
 
 class Othello : public GL{
 	int width,height;

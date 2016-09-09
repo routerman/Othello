@@ -35,10 +35,3 @@ enum Stat{
 	END,
 	GAMEOVER
 };
-
-
-enum PlayerMode{
-	HUMAN,
-	AGENT,
-	ROUTERMAN,
-};
