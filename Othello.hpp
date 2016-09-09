@@ -7,6 +7,17 @@
 #include "Disk.hpp"
 #include "I2.hpp"
 
+enum Stat{
+	READY,
+	PLAY,
+	PAUSE,
+	WAIT,
+	TURN,
+	THINK,
+	END,
+	GAMEOVER
+};
+
 enum PlayerMode{
 	HUMAN,
 	AGENT,
@@ -17,7 +28,7 @@ class Othello : public GL{
 	int width,height;
 	Board board;
 	Machine *machine[2];
-	Stat stat;
+	int stat;
 	PlayerMode playermode[2];
 
 	I2 cursor;

@@ -24,14 +24,3 @@ public:
 		this->y+=a.y;
 	}
 };
-
-enum Stat{
-	READY,
-	PLAY,
-	PAUSE,
-	WAIT,
-	TURN,
-	THINK,
-	END,
-	GAMEOVER
-};
