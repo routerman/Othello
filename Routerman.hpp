@@ -7,11 +7,11 @@
 #define WHITE true
 
 
-/* Routermanの思考を埋め込んだコンピュータ(厨二www) */
+/* Routerman縺ｮ諤晁�繧貞沂繧∬ｾｼ繧薙□繧ｳ繝ｳ繝斐Η繝ｼ繧ｿ(蜴ｨ莠詣ww) */
 class Routerman : public Machine{
 	int weight[8][8];
 public:
-	//そこを置くと相手に角をとられるか調べる関数
+	//縺昴％繧堤ｽｮ縺上→逶ｸ謇九↓隗偵ｒ縺ｨ繧峨ｌ繧九°隱ｿ縺ｹ繧矩未謨ｰ
 	bool corner_lose(int x,int y,Disk s[][8]);
 	void select();
 	Routerman(bool color){

@@ -6,7 +6,7 @@ class Agent : public Machine{
 
 public:
 	void select(){
-		//‚±‚±‚ð‰ü—Ç‚µ‚Ä‚­‚¾‚³‚¢B
+		//ã“ã“ã‚’æ”¹è‰¯ã—ã¦ãã ã•ã„ã€‚
 		for(int i=0;i<8;i++){
 			for(int j=0;j<8;j++){
 				if( disk[i][j].isPutable(color)){

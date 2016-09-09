@@ -3,7 +3,7 @@
 #include "Disk.hpp"
 #include "I2.hpp"
 
-/* 敵コンピュータの素となるクラス */
+/* 謨ｵ繧ｳ繝ｳ繝斐Η繝ｼ繧ｿ縺ｮ邏縺ｨ縺ｪ繧九け繝ｩ繧ｹ */
 class Machine{
 protected:
 	bool color;

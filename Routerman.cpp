@@ -1,20 +1,20 @@
-//hppƒtƒ@ƒCƒ‹‚ÅƒCƒ“ƒNƒ‹[ƒh‚·‚é‚ÆC2146–â‘è‚ª”­¶‚·‚éB
+//hppãƒ•ã‚¡ã‚¤ãƒ«ã§ã‚¤ãƒ³ã‚¯ãƒ«ãƒ¼ãƒ‰ã™ã‚‹ã¨C2146å•é¡ŒãŒç™ºç”Ÿã™ã‚‹ã€‚
 #include "Othello.hpp"
 #include "Routerman.hpp"
 
 /*
-ˆêŽèæ‚ð“Ç‚ÝAŠp‚ªŽæ‚ç‚ê‚È‚¢‚©ƒ`ƒFƒbƒN‚·‚éB
-Žæ‚ç‚ê‚éê‡‚Ítrue Žæ‚ç‚ê‚È‚¢ê‡‚Ífalse
+ä¸€æ‰‹å…ˆã‚’èª­ã¿ã€è§’ãŒå–ã‚‰ã‚Œãªã„ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹ã€‚
+å–ã‚‰ã‚Œã‚‹å ´åˆã¯true å–ã‚‰ã‚Œãªã„å ´åˆã¯false
 */
 bool Routerman::corner_lose(int x,int y,Disk disk[][8]){
 	//copy disk
 	I2 temp(x,y);
 	Othello *test = new Othello(disk);
-	test->disk[x][y].setOnboard(true);//ˆêŽž“I‚É’u‚¢‚Ä‚Ý‚éB
-	test->disk[x][y].setColor(color); //Ž©•ª‚ÌÎ
-	test->reverse(color,temp);	//‚Ð‚Á‚­‚è•Ô‚·
-	test->ScanPutable(!color);		//“G‚Ì’u‚¯‚éêŠ‚ðƒ`ƒFƒbƒN‚·‚é
-	//–ß‚è’l Žæ‚ç‚ê‚éê‡:true,Žæ‚ç‚ê‚È‚¢ê‡;false
+	test->disk[x][y].setOnboard(true);//ä¸€æ™‚çš„ã«ç½®ã„ã¦ã¿ã‚‹ã€‚
+	test->disk[x][y].setColor(color); //è‡ªåˆ†ã®çŸ³
+	test->reverse(color,temp);	//ã²ã£ãã‚Šè¿”ã™
+	test->ScanPutable(!color);		//æ•µã®ç½®ã‘ã‚‹å ´æ‰€ã‚’ãƒã‚§ãƒƒã‚¯ã™ã‚‹
+	//æˆ»ã‚Šå€¤ å–ã‚‰ã‚Œã‚‹å ´åˆ:true,å–ã‚‰ã‚Œãªã„å ´åˆ;false
 	bool putable=test->disk[0][0].isPutable(!color) ||
 			     test->disk[0][7].isPutable(!color) ||
 				 test->disk[7][0].isPutable(!color) ||

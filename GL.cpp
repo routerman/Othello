@@ -28,7 +28,7 @@ void GL::DrawString(int x, int y, string s)
 		glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, s[i]);
 	}
 }
-//石を描く関数
+//遏ｳ繧呈緒縺城未謨ｰ
 void GL::DrawCircle(int x, int y){
 	GLint x1, y1;
 	glBegin(GL_POLYGON);
@@ -39,7 +39,7 @@ void GL::DrawCircle(int x, int y){
 	}
 	glEnd();
 }
-//置ける場所を示す関数
+//鄂ｮ縺代ｋ蝣ｴ謇繧堤､ｺ縺咎未謨ｰ
 void GL::DrawSquare( int x, int y){
 	glBegin(GL_POLYGON);
 	glVertex2i((GLint)x,(GLint)y);
@@ -49,7 +49,7 @@ void GL::DrawSquare( int x, int y){
 	glEnd();
 }
 
-//アナログ時計を描く関数
+//繧｢繝翫Ο繧ｰ譎りｨ医ｒ謠上￥髢｢謨ｰ
 void GL::DrawWatch(int x,int y,float t){
 	GLint x1, y1, i;
 	glColor3f(0,0,0);

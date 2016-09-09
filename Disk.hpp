@@ -3,8 +3,8 @@
 #include "I2.hpp"
 class Disk{
 	I2 position;
-	bool onboard;			//Šù‚É’u‚¢‚Ä‚ ‚é‚©‚Ç‚¤‚©
-	bool color;			//F
+	bool onboard;			//æ—¢ã«ç½®ã„ã¦ã‚ã‚‹ã‹ã©ã†ã‹
+	bool color;			//è‰²
 	bool putable[2];
 
 public:

@@ -4,11 +4,11 @@ Othello *othello;
 
 /* mouse motion */
 void Othello::mouse(int cx,int cy){
-	/* ˆÊ’uî•ñ‚ğ•â³‚µ‚Äcursor‚É‘ã“üBcursor‚©‚çcursor_square‚ğ‹‚ß‚éB */
-	//•â³ŠÖ”()
+	/* ä½ç½®æƒ…å ±ã‚’è£œæ­£ã—ã¦cursorã«ä»£å…¥ã€‚cursorã‹ã‚‰cursor_squareã‚’æ±‚ã‚ã‚‹ã€‚ */
+	//è£œæ­£é–¢æ•°()
 	cursor_adjust(cx,cy);
 	//std::cout<<cursor.x<<","<<cursor.y<<"ration="<<ration<<std::endl;
-	//lŠÔ‚Í©•ª‚Ìƒ^[ƒ“‚Å‚Í‚È‚¢‚Æ‚«‚ÍƒJ[ƒ\ƒ‹‚ğ“®‚©‚³‚È‚¢
+	//äººé–“ã¯è‡ªåˆ†ã®ã‚¿ãƒ¼ãƒ³ã§ã¯ãªã„ã¨ãã¯ã‚«ãƒ¼ã‚½ãƒ«ã‚’å‹•ã‹ã•ãªã„
 	if( playermode[turn]==HUMAN ){
 		//cursor_square.set(cursor.x/(60*ration)-1,cursor.y/(60*ration)-1);		
 		cursor_square.set(cursor.x/60-1,cursor.y/60-1);		
@@ -17,11 +17,11 @@ void Othello::mouse(int cx,int cy){
 /* mouse click */
 void Othello::mousebotton(int state ,int button, int cx,int cy){
 	if(  state != GLUT_DOWN ||  button != GLUT_LEFT_BUTTON  )return;
-	//•â³ŠÖ”()
+	//è£œæ­£é–¢æ•°()
 	cursor_adjust(cx,cy);
 	
 
-	//ƒ{ƒ^ƒ“
+	//ãƒœã‚¿ãƒ³
 	board.button_proc(stat,cursor);
 	if( board.undo.isPushed(cursor) ){
 		undo(turn);
@@ -43,9 +43,9 @@ void Othello::mousebotton(int state ,int button, int cx,int cy){
 			board.player[color].selectLabel(playermode[color]);
 			//machine[color]->setColor(color);
 		}
-	}while(color=!color, color==WHITE);//BLACK,WHITE‚Ì2‚Â‚¾‚¯B
+	}while(color=!color, color==WHITE);//BLACK,WHITEã®2ã¤ã ã‘ã€‚
 
-	//disk‚ğ’u‚­
+	//diskã‚’ç½®ã
 	if( playermode[turn]==HUMAN ){
 		cursor_square.set(cursor.x/60-1,cursor.y/60-1);		
 		Proc();
@@ -54,7 +54,7 @@ void Othello::mousebotton(int state ,int button, int cx,int cy){
 }
 /* time event */
 void Othello::timer(int dt){
-	//ƒOƒ[ƒoƒ‹ƒ^ƒCƒ€
+	//ã‚°ãƒ­ãƒ¼ãƒãƒ«ã‚¿ã‚¤ãƒ 
 	if( stat == PLAY ){
 		time1++;
 		subtime++;
@@ -68,32 +68,32 @@ void Othello::timer(int dt){
 	glutPostRedisplay();
 }
 
-//Î‚ğ’u‚­Û‚Ì‹¤’Êˆ—
+//çŸ³ã‚’ç½®ãéš›ã®å…±é€šå‡¦ç†
 void Othello::Proc(){
-	//o”Ô‚ÌƒAƒNƒZƒX§Œä
-	//ƒAƒNƒZƒX§Œä
+	//å‡ºç•ªã®ã‚¢ã‚¯ã‚»ã‚¹åˆ¶å¾¡
+	//ã‚¢ã‚¯ã‚»ã‚¹åˆ¶å¾¡
 	subtime=0;
 	if( stat != PLAY )return;
-	//’u‚¯‚éêŠ‚©‚Ç‚¤‚©
+	//ç½®ã‘ã‚‹å ´æ‰€ã‹ã©ã†ã‹
 	if( cursor_square.isOnboard()==false || disk[cursor_square.x][cursor_square.y].isPutable(turn) == false )return;
-	//’u‚­‘O‚ÉUNDO—p‚É•Û‘¶‚·‚é
+	//ç½®ãå‰ã«UNDOç”¨ã«ä¿å­˜ã™ã‚‹
 	save(turn);
 	before_square[turn]=cursor_square;
 
-	//Î‚ğ’u‚­
+	//çŸ³ã‚’ç½®ã
 	disk[cursor_square.x][cursor_square.y].place(turn);
 
-	//ƒŠƒo[ƒX‚·‚é
+	//ãƒªãƒãƒ¼ã‚¹ã™ã‚‹
 	reverse(turn,cursor_square);
 	
-	//“G‚ª’u‚¯‚é‚©ƒ`ƒFƒbƒN
+	//æ•µãŒç½®ã‘ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
 	if(	ScanPutable(!turn),isAnyPutable(!turn) ){
-		turn=!turn;	//Œğ‘ã
+		turn=!turn;	//äº¤ä»£
 	}else{
-		//“G‚ª’u‚¯‚È‚¢ê‡©•ª‚É–ß‚é
+		//æ•µãŒç½®ã‘ãªã„å ´åˆè‡ªåˆ†ã«æˆ»ã‚‹
 		ScanPutable(turn);
 		if( isAnyPutable(turn) == false ){
-			//©•ª‚à’u‚¯‚È‚¢ê‡‚ÍI—¹
+			//è‡ªåˆ†ã‚‚ç½®ã‘ãªã„å ´åˆã¯çµ‚äº†
 			stat=GAMEOVER;
 			for(int i=0;i<8;i++){
 				for(int j=0;j<8;j++){
@@ -106,7 +106,7 @@ void Othello::Proc(){
 	}
 }
 
-//ƒL[“ü—Í
+//ã‚­ãƒ¼å…¥åŠ›
 void Othello::key(unsigned char k, int x, int y){
 	switch (k) {
         case 27:  /* Escape */
@@ -122,7 +122,7 @@ void Othello::display(void){
 	/* Before Draw */
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	if( stat == PLAY ){
-		/* ’u‚¢‚½êŠ */
+		/* ç½®ã„ãŸå ´æ‰€ */
 		glColor3f(1,0,0);
 		DrawSquare(60*(before_square[!turn].x+1),60*(before_square[!turn].y+1));
 	}
@@ -131,7 +131,7 @@ void Othello::display(void){
 			disk[i][j].drow(turn);
 		}
 	}
-	//ƒ{ƒ^ƒ“
+	//ãƒœã‚¿ãƒ³
 	board.player[BLACK].drow();
 	board.player[WHITE].drow();
 	board.play.drow();
@@ -140,12 +140,12 @@ void Othello::display(void){
 
 	board.drow(time1);
 	if( stat == PLAY ){
-		/* ƒJ[ƒ\ƒ‹ */
+		/* ã‚«ãƒ¼ã‚½ãƒ« */
 		if(turn==WHITE)glColor3f(1,1,1);
 		else glColor3f(0,0,0);
 		if( cursor_square.isOnboard() && disk[cursor_square.x][cursor_square.y].isPutable(turn) )DrawCircle(90+cursor_square.x*60,90+cursor_square.y*60);
 	}else if( stat == GAMEOVER ){
-		/* ƒQ[ƒ€I—¹ */
+		/* ã‚²ãƒ¼ãƒ çµ‚äº† */
 		if( num_disk[BLACK] <= num_disk[WHITE] ){
 			glColor3f(1,1,1);
 		}else if(num_disk[BLACK] > num_disk[WHITE] ){
@@ -177,7 +177,7 @@ void Othello::display(void){
 		}
 
 	}else if( stat == READY ){
-		/* ƒ‚[ƒhİ’è */
+		/* ãƒ¢ãƒ¼ãƒ‰è¨­å®š */
 		/*
 		glColor3f(1,1,1);
 		glBegin(GL_QUADS);
@@ -200,12 +200,12 @@ void Othello::reverse(bool color,I2 position){
 	for(int i=-1;i<=1;i++){
 		for(int j=-1;j<=1;j++){
 			I2 temp(i,j);
-			if( checkLine(color,position,temp) ){	//reverse‰Â
+			if( checkLine(color,position,temp) ){	//reverseå¯
 				do{
 					hand+=temp;
 					disk[hand.x][hand.y].setColor(color);	//reverse
-				}while(disk[hand.x+temp.x][hand.y+temp.y].getColor()!=color && hand.isOnboard() );	//“¯‚¶F‚ÌÎ‚ªŒ©‚Â‚©‚é‚Ü‚Å
-				hand=position;	//’u‚¢‚½êŠ‚É–ß‚é
+				}while(disk[hand.x+temp.x][hand.y+temp.y].getColor()!=color && hand.isOnboard() );	//åŒã˜è‰²ã®çŸ³ãŒè¦‹ã¤ã‹ã‚‹ã¾ã§
+				hand=position;	//ç½®ã„ãŸå ´æ‰€ã«æˆ»ã‚‹
 			}
 		}
 	}
@@ -222,11 +222,11 @@ bool Othello::isAnyPutable(bool color){
 	return false;
 }
 
-/* ‚»‚Ì•ûŒü‚É‘Î‚µ‚ÄƒŠƒo[ƒX‚Å‚«‚é‚© */
+/* ãã®æ–¹å‘ã«å¯¾ã—ã¦ãƒªãƒãƒ¼ã‚¹ã§ãã‚‹ã‹ */
 bool Othello::checkLine(bool color,I2 r,I2 d){
 	if( d.x==0 && d.y==0 )return false;
 	r+=d;
-	//while(ˆÙF‚ÌÎ‚ª‘¶İ && ”Õ“à)
+	//while(ç•°è‰²ã®çŸ³ãŒå­˜åœ¨ && ç›¤å†…)
 	while(  disk[r.x][r.y].getColor() != color && disk[r.x][r.y].isOnboard() && r.isOnboard() ){
 		r+=d;
 		if( disk[r.x][r.y].getColor() == color && disk[r.x][r.y].isOnboard() && r.isOnboard() )return true;
@@ -259,7 +259,7 @@ void Othello::ScanPutable(bool color){
 	}
 }
 
-/* ƒQ[ƒ€’PˆÊ‚Ì‰Šúİ’è */
+/* ã‚²ãƒ¼ãƒ å˜ä½ã®åˆæœŸè¨­å®š */
 void Othello::init(){
 
 }
@@ -273,7 +273,7 @@ Othello::Othello( Disk disk[][8] ){
 	}
 }
 
-/* ‹N“®ŒãAÅ‰‚ÉŒÄ‚Ño‚³‚ê‚éB*/
+/* èµ·å‹•å¾Œã€æœ€åˆã«å‘¼ã³å‡ºã•ã‚Œã‚‹ã€‚*/
 Othello::Othello(){
 	//game init
 	stat=READY;
@@ -325,7 +325,7 @@ Othello::Othello(){
 
 
 #ifdef OOP
-//static ‚Èƒƒ“ƒoŠÖ”‚µ‚©ŒÄ‚Ño‚¹‚È‚¢
+//static ãªãƒ¡ãƒ³ãƒé–¢æ•°ã—ã‹å‘¼ã³å‡ºã›ãªã„
 int main(int argc, char **argv){
 	Othello *othelo = new Othello();
 	glutInit(&argc, argv);
