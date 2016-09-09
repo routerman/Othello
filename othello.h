@@ -29,7 +29,7 @@ class Othello : public GL{
 	Board board;
 	Machine *machine[2];
 	int stat;
-	PlayerMode playermode[2];
+	PlayerMode player_mode[2];
 
 	I2 cursor;
 	I2 cursor_square;

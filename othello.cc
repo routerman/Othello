@@ -9,7 +9,7 @@ void Othello::mouse(int cx,int cy){
 	cursor_adjust(cx,cy);
 	//std::cout<<cursor.x<<","<<cursor.y<<"ration="<<ration<<std::endl;
 	//人間は自分のターンではないときはカーソルを動かさない
-	if( playermode[turn]==HUMAN ){
+	if( player_mode[turn]==HUMAN ){
 		//cursor_square.set(cursor.x/(60*ration)-1,cursor.y/(60*ration)-1);		
 		cursor_square.set(cursor.x/60-1,cursor.y/60-1);		
 	}
@@ -36,17 +36,17 @@ void Othello::mousebotton(int state ,int button, int cx,int cy){
 	bool color=BLACK;
 	do{
 		if( board.player[color].isPushed(cursor) && stat==READY ){
-			playermode[color]=static_cast<PlayerMode>( playermode[color] + 1 );
-			if( playermode[color] > ROUTERMAN )playermode[color]=HUMAN;		
-			if( playermode[color] == AGENT )machine[color] =new Agent(color);
-			else if( playermode[color] == ROUTERMAN )machine[color] =new Routerman(color);
-			board.player[color].selectLabel(playermode[color]);
+			player_mode[color]=static_cast<PlayerMode>( player_mode[color] + 1 );
+			if( player_mode[color] > ROUTERMAN )player_mode[color]=HUMAN;		
+			if( player_mode[color] == AGENT )machine[color] =new Agent(color);
+			else if( player_mode[color] == ROUTERMAN )machine[color] =new Routerman(color);
+			board.player[color].selectLabel(player_mode[color]);
 			//machine[color]->setColor(color);
 		}
 	}while(color=!color, color==WHITE);//BLACK,WHITEの2つだけ。
 
 	//diskを置く
-	if( playermode[turn]==HUMAN ){
+	if( player_mode[turn]==HUMAN ){
 		cursor_square.set(cursor.x/60-1,cursor.y/60-1);		
 		Proc();
 	}
@@ -59,7 +59,7 @@ void Othello::timer(int dt){
 		time1++;
 		subtime++;
 	}
-	if( subtime>30 && playermode[turn] != HUMAN  && stat==PLAY ){
+	if( subtime>30 && player_mode[turn] != HUMAN  && stat==PLAY ){
 		machine[turn]->setDisk(disk);
 		machine[turn]->select();
 		cursor_square=machine[turn]->getCursor();
@@ -166,14 +166,14 @@ void Othello::display(void){
 			glColor3f(1,1,1);
 		}
 		DrawString(130,300,message.str());
-		if( playermode[BLACK]!=HUMAN && playermode[WHITE]!=HUMAN ){
+		if( player_mode[BLACK]!=HUMAN && player_mode[WHITE]!=HUMAN ){
 			int w = this->width;
 			int h = this->height;
 			delete othello;
 			othello = new Othello;
 			reshape(w,h);
-			playermode[BLACK]=AGENT;
-			playermode[WHITE]=ROUTERMAN;
+			player_mode[BLACK]=AGENT;
+			player_mode[WHITE]=ROUTERMAN;
 		}
 
 	}else if( stat == READY ){
@@ -277,8 +277,8 @@ Othello::Othello( Disk disk[][8] ){
 Othello::Othello(){
 	//game init
 	stat=READY;
-	playermode[BLACK]=HUMAN;
-	playermode[WHITE]=HUMAN;
+	player_mode[BLACK]=HUMAN;
+	player_mode[WHITE]=HUMAN;
 
 	machine[BLACK] = new Machine;
 	machine[WHITE] = new Machine;
