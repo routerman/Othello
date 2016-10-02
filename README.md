@@ -1,13 +1,16 @@
 Othello
 =======
-This is written with C++ language and OpenGL API.
+This is Othello implemented with C++ language and OpenGL API.
 
-At http://keiorogiken.wordpress.com/2013/02/10/startopengl/, I wrote the article about How to install OpenGL.
+I wrote the article about How to install OpenGL.
+http://keiorogiken.wordpress.com/2013/02/10/startopengl/, 
 
 There are two AI which I programed.
-First one is Routerman. His strategy is the same as mine.
-Second one is Agent which I programed as well, but he is weeker than Routerman now.
-So you can download source code and refine the algorithm of Agent.
+
+Routerman: The strategy is the same as creater.
+Agent: I programed as well, but he is weeker than Routerman now.
+
+So you can download source code and refine the Agent.
 Beat Routerman!
 
 
@@ -21,7 +24,7 @@ You have to install some packages for OpenGL and development tools, such as gcc-
 # yum install gcc-c++ make freeglut freeglut-devel
 
 @Ubuntu
-# apt-get install freeglut3-dev libglew1.5-dev
+# apt install freeglut3-dev libglew-dev
 
 @Mac
 nothing you have to install.
