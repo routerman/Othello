@@ -85,6 +85,7 @@ public:
 
 	void Proc();
 	bool checkLine(bool color,I2 r,I2 d);
+    void reverseLine(bool color,I2 r,I2 d);
 	void reverse(bool color,I2 cursor);
 	void ScanPutable(bool color);
 	bool checkPutable(bool color,I2 position);

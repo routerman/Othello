@@ -195,20 +195,22 @@ void Othello::display(void){
 	glutSwapBuffers();
 }
 
+void Othello::reverseLine(bool color,I2 r,I2 d){
+    do{
+		r+=d;
+		disk[r.x][r.y].setColor(color);
+	}while(disk[r.x+d.x][r.y+d.y].getColor()!=color && r.isOnboard() );
+}
+
 void Othello::reverse(bool color,I2 position){
-	I2 hand=position;
-	for(int i=-1;i<=1;i++){
-		for(int j=-1;j<=1;j++){
-			I2 temp(i,j);
-			if( checkLine(color,position,temp) ){	//reverse可
-				do{
-					hand+=temp;
-					disk[hand.x][hand.y].setColor(color);	//reverse
-				}while(disk[hand.x+temp.x][hand.y+temp.y].getColor()!=color && hand.isOnboard() );	//同じ色の石が見つかるまで
-				hand=position;	//置いた場所に戻る
-			}
-		}
-	}
+    if( checkLine(color,position,I2( 0, 1)) ) reverseLine(color,position,I2( 0, 1));
+    if( checkLine(color,position,I2( 1, 1)) ) reverseLine(color,position,I2( 1, 1));
+    if( checkLine(color,position,I2( 1, 0)) ) reverseLine(color,position,I2( 1, 0));
+    if( checkLine(color,position,I2( 1,-1)) ) reverseLine(color,position,I2( 1,-1));
+    if( checkLine(color,position,I2( 0,-1)) ) reverseLine(color,position,I2( 0,-1));
+    if( checkLine(color,position,I2(-1,-1)) ) reverseLine(color,position,I2(-1,-1));
+    if( checkLine(color,position,I2(-1, 0)) ) reverseLine(color,position,I2(-1, 0));
+    if( checkLine(color,position,I2(-1, 1)) ) reverseLine(color,position,I2(-1, 1));
 }
 
 
@@ -237,14 +239,14 @@ bool Othello::checkLine(bool color,I2 r,I2 d){
 /* Analyze a square which can be putable. */
 bool Othello::checkPutable(bool color,I2 position){
 	if( disk[position.x][position.y].isOnboard() )return false;
-	else{
-		for(int i=-1;i<=1;i++){
-			for(int j=-1;j<=1;j++){
-				I2 direction(i,j);
-				if( checkLine(color,position,direction) )return true;
-			}
-		}
-	}
+    if( checkLine(color,position,I2( 0, 1)) ) return true;
+    if( checkLine(color,position,I2( 1, 1)) ) return true;
+    if( checkLine(color,position,I2( 1, 0)) ) return true;
+    if( checkLine(color,position,I2( 1,-1)) ) return true;
+    if( checkLine(color,position,I2( 0,-1)) ) return true;
+    if( checkLine(color,position,I2(-1,-1)) ) return true;
+    if( checkLine(color,position,I2(-1, 0)) ) return true;
+    if( checkLine(color,position,I2(-1, 1)) ) return true;
 	return false;
 }
 
@@ -252,9 +254,7 @@ bool Othello::checkPutable(bool color,I2 position){
 void Othello::ScanPutable(bool color){
 	for(int x=0;x<8;x++){
 		for(int y=0;y<8;y++){
-			//disk[x][y].checkPutable(color);
-			I2 position(x,y);
-			disk[position.x][position.y].setPutable(color, checkPutable(color,position) );
+			disk[x][y].setPutable(color, checkPutable(color,I2(x,y)) );
 		}
 	}
 }
