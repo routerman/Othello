@@ -1,6 +1,10 @@
 #pragma once
 #include "gl.h"
 #include "i2.h"
+
+#define WHITE true
+#define BLACK false
+
 class Disk{
 	I2 position;
 	bool onboard;			//既に置いてあるかどうか

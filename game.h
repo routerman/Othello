@@ -50,7 +50,6 @@ public:
 		cursor.x=cx/ration;
 		cursor.y=cy/ration-calib;
 	}
-	void init();
 	void mousebotton(int state ,int button, int cx,int cy);
 	void mouse(int cx,int cy);
 	void key(unsigned char k, int x, int y);
@@ -82,17 +81,8 @@ public:
 			}
 		}
 	}
-
 	void Proc();
-	bool checkLine(bool color,I2 r,I2 d);
-    void reverseLine(bool color,I2 r,I2 d);
-	void reverse(bool color,I2 cursor);
-	void ScanPutable(bool color);
-	bool checkPutable(bool color,I2 position);
-	bool isAnyPutable(bool color);
-	
 	Game();
-	Game(Disk disk[][8]);
 };
 
 extern Game *game;

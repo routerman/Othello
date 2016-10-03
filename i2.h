@@ -19,6 +19,11 @@ public:
 		if( y<0 || y>7 )return false;
 		return true;
 	}
+	I2 operator+(I2 a){
+		a.x = this->x + a.x;
+		a.y = this->y + a.y;
+		return a;
+	}
 	void operator+=(I2 a){
 		this->x+=a.x;
 		this->y+=a.y;
