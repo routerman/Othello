@@ -59,7 +59,7 @@ void Game::timer(int dt){
 		subtime++;
 	}
 	if( subtime>30 && player_mode[turn] != HUMAN  && stat==PLAY ){
-		machine[turn]->setDisk(disk);
+		machine[turn]->setDisk(othello->disk);
 		machine[turn]->select();
 		cursor_square=machine[turn]->getCursor();
 		Proc();
@@ -74,13 +74,13 @@ void Game::Proc(){
 	subtime=0;
 	if( stat != PLAY )return;
 	//置ける場所かどうか
-	if( cursor_square.isOnboard()==false || disk[cursor_square.x][cursor_square.y].isPutable(turn) == false )return;
+	if( cursor_square.isOnboard()==false || othello->disk[cursor_square.x][cursor_square.y].isPutable(turn) == false )return;
 	//置く前にUNDO用に保存する
 	save(turn);
 	before_square[turn]=cursor_square;
 
 	//石を置く
-	disk[cursor_square.x][cursor_square.y].place(turn);
+	othello->disk[cursor_square.x][cursor_square.y].place(turn);
 
 	//リバースする
 	reverse(turn,cursor_square);
@@ -96,8 +96,8 @@ void Game::Proc(){
 			stat=GAMEOVER;
 			for(int i=0;i<8;i++){
 				for(int j=0;j<8;j++){
-					if( disk[i][j].isOnboard() ){
-						num_disk[disk[i][j].getColor()]++;
+					if( othello->disk[i][j].isOnboard() ){
+						num_disk[othello->disk[i][j].getColor()]++;
 					}
 				}
 			}
@@ -127,7 +127,7 @@ void Game::display(void){
 	}
 	for(int i=0;i<8;i++){
 		for(int j=0;j<8;j++){
-			disk[i][j].draw(turn);
+			othello->disk[i][j].draw(turn);
 		}
 	}
 	//ボタン
@@ -142,7 +142,7 @@ void Game::display(void){
 		/* カーソル */
 		if(turn==WHITE)glColor3f(1,1,1);
 		else glColor3f(0,0,0);
-		if( cursor_square.isOnboard() && disk[cursor_square.x][cursor_square.y].isPutable(turn) )DrawCircle(90+cursor_square.x*60,90+cursor_square.y*60);
+		if( cursor_square.isOnboard() && othello->disk[cursor_square.x][cursor_square.y].isPutable(turn) )DrawCircle(90+cursor_square.x*60,90+cursor_square.y*60);
 	}else if( stat == GAMEOVER ){
 		/* ゲーム終了 */
 		if( num_disk[BLACK] <= num_disk[WHITE] ){
@@ -197,8 +197,8 @@ void Game::display(void){
 void Game::reverseLine(bool color,I2 r,I2 d){
     do{
 		r+=d;
-		disk[r.x][r.y].setColor(color);
-	}while(disk[r.x+d.x][r.y+d.y].getColor()!=color && r.isOnboard() );
+		othello->disk[r.x][r.y].setColor(color);
+	}while(othello->disk[r.x+d.x][r.y+d.y].getColor()!=color && r.isOnboard() );
 }
 
 void Game::reverse(bool color,I2 position){
@@ -217,7 +217,7 @@ void Game::reverse(bool color,I2 position){
 bool Game::isAnyPutable(bool color){
 	for(int x=0;x<8;x++){
 		for(int y=0;y<8;y++){
-			if( disk[x][y].isPutable(color) )return true;
+			if( othello->disk[x][y].isPutable(color) )return true;
 		}
 	}
 	return false;
@@ -228,16 +228,16 @@ bool Game::checkLine(bool color,I2 r,I2 d){
 	if( d.x==0 && d.y==0 )return false;
 	r+=d;
 	//while(異色の石が存在 && 盤内)
-	while(  disk[r.x][r.y].getColor() != color && disk[r.x][r.y].isOnboard() && r.isOnboard() ){
+	while(  othello->disk[r.x][r.y].getColor() != color && othello->disk[r.x][r.y].isOnboard() && r.isOnboard() ){
 		r+=d;
-		if( disk[r.x][r.y].getColor() == color && disk[r.x][r.y].isOnboard() && r.isOnboard() )return true;
+		if( othello->disk[r.x][r.y].getColor() == color && othello->disk[r.x][r.y].isOnboard() && r.isOnboard() )return true;
 	}
 	return false;
 }
 
 /* Analyze a square which can be putable. */
 bool Game::checkPutable(bool color,I2 position){
-	if( disk[position.x][position.y].isOnboard() )return false;
+	if( othello->disk[position.x][position.y].isOnboard() )return false;
     if( checkLine(color,position,I2( 0, 1)) ) return true;
     if( checkLine(color,position,I2( 1, 1)) ) return true;
     if( checkLine(color,position,I2( 1, 0)) ) return true;
@@ -253,7 +253,7 @@ bool Game::checkPutable(bool color,I2 position){
 void Game::ScanPutable(bool color){
 	for(int x=0;x<8;x++){
 		for(int y=0;y<8;y++){
-			disk[x][y].setPutable(color, checkPutable(color,I2(x,y)) );
+			othello->disk[x][y].setPutable(color, checkPutable(color,I2(x,y)) );
 		}
 	}
 }
@@ -267,7 +267,7 @@ void Game::init(){
 Game::Game( Disk disk[][8] ){
 	for(int m=0;m<8;m++){
 		for(int n=0;n<8;n++){
-			this->disk[m][n]=disk[m][n];
+			this->othello->disk[m][n]=disk[m][n];
 		}
 	}
 }
@@ -290,17 +290,18 @@ Game::Game(){
 	num_disk[BLACK]=num_disk[WHITE]=0;
 	init();
 	//Disk
+    othello = new Othello();
 	for(int m=0;m<8;m++){
 		for(int n=0;n<8;n++){
-			disk[m][n].init_postion(m,n);
-			disk[m][n].setOnboard(false);
-			disk[m][n].setColor(BLACK);
+			othello->disk[m][n].init_postion(m,n);
+			othello->disk[m][n].setOnboard(false);
+			othello->disk[m][n].setColor(BLACK);
 		}
 	}
-	disk[3][3].place(BLACK);
-	disk[4][3].place(WHITE);
-	disk[3][4].place(WHITE);
-	disk[4][4].place(BLACK);
+	othello->disk[3][3].place(BLACK);
+	othello->disk[4][3].place(WHITE);
+	othello->disk[3][4].place(WHITE);
+	othello->disk[4][4].place(BLACK);
 	ScanPutable(BLACK);
 	ScanPutable(WHITE);
 	save(BLACK);

@@ -4,8 +4,8 @@
 #include "gl.h"
 #include "board.h"
 #include "button.h"
-#include "disk.h"
 #include "i2.h"
+#include "othello.h"
 
 enum Stat{
 	READY,
@@ -43,7 +43,7 @@ class Game : public GL{
 protected:
 
 public:
-	Disk disk[8][8];
+    Othello *othello;
 	void cursor_adjust(int cx,int cy){
 		//cursor_square.set(cursor.x/(60*ration)-1,cursor.y/(60*ration)-1);		
 
@@ -71,14 +71,14 @@ public:
 	void save(bool turn){
 		for(int i=0;i<8;i++){
 			for(int j=0;j<8;j++){
-				this->before_disk[i][j][turn] = this->disk[i][j];
+				this->before_disk[i][j][turn] = this->othello->disk[i][j];
 			}
 		}
 	}
 	void undo(bool turn){
 		for(int i=0;i<8;i++){
 			for(int j=0;j<8;j++){
-				this->disk[i][j] = this->before_disk[i][j][turn];
+				othello->disk[i][j] = this->before_disk[i][j][turn];
 			}
 		}
 	}
