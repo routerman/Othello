@@ -94,3 +94,5 @@ public:
 	Othello();
 	Othello(Disk disk[][8]);
 };
+
+extern Othello *othello;
