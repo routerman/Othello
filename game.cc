@@ -1,8 +1,8 @@
-#include "othello.h"
+#include "game.h"
 
 
 /* mouse motion */
-void Othello::mouse(int cx,int cy){
+void Game::mouse(int cx,int cy){
 	/* 位置情報を補正してcursorに代入。cursorからcursor_squareを求める。 */
 	//補正関数()
 	cursor_adjust(cx,cy);
@@ -14,7 +14,7 @@ void Othello::mouse(int cx,int cy){
 	}
 }
 /* mouse click */
-void Othello::mousebotton(int state ,int button, int cx,int cy){
+void Game::mousebotton(int state ,int button, int cx,int cy){
 	if(  state != GLUT_DOWN ||  button != GLUT_LEFT_BUTTON  )return;
 	//補正関数()
 	cursor_adjust(cx,cy);
@@ -27,8 +27,8 @@ void Othello::mousebotton(int state ,int button, int cx,int cy){
 	}else if( board.reset.isPushed(cursor) ){
 		int w = this->width;
 		int h = this->height;
-		delete othello;
-		othello = new Othello;
+		delete game;
+		game = new Game;
 		reshape(w,h);
 	}
 
@@ -52,7 +52,7 @@ void Othello::mousebotton(int state ,int button, int cx,int cy){
 	glutPostRedisplay();
 }
 /* time event */
-void Othello::timer(int dt){
+void Game::timer(int dt){
 	//グローバルタイム
 	if( stat == PLAY ){
 		time1++;
@@ -68,7 +68,7 @@ void Othello::timer(int dt){
 }
 
 //石を置く際の共通処理
-void Othello::Proc(){
+void Game::Proc(){
 	//出番のアクセス制御
 	//アクセス制御
 	subtime=0;
@@ -106,7 +106,7 @@ void Othello::Proc(){
 }
 
 //キー入力
-void Othello::key(unsigned char k, int x, int y){
+void Game::key(unsigned char k, int x, int y){
 	switch (k) {
         case 27:  /* Escape */
             exit(0);
@@ -117,7 +117,7 @@ void Othello::key(unsigned char k, int x, int y){
 	glutPostRedisplay();
 }
 
-void Othello::display(void){
+void Game::display(void){
 	/* Before Draw */
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	if( stat == PLAY ){
@@ -168,8 +168,8 @@ void Othello::display(void){
 		if( player_mode[BLACK]!=HUMAN && player_mode[WHITE]!=HUMAN ){
 			int w = this->width;
 			int h = this->height;
-			delete othello;
-			othello = new Othello;
+			delete game;
+			game = new Game;
 			reshape(w,h);
 			player_mode[BLACK]=AGENT;
 			player_mode[WHITE]=ROUTERMAN;
@@ -194,14 +194,14 @@ void Othello::display(void){
 	glutSwapBuffers();
 }
 
-void Othello::reverseLine(bool color,I2 r,I2 d){
+void Game::reverseLine(bool color,I2 r,I2 d){
     do{
 		r+=d;
 		disk[r.x][r.y].setColor(color);
 	}while(disk[r.x+d.x][r.y+d.y].getColor()!=color && r.isOnboard() );
 }
 
-void Othello::reverse(bool color,I2 position){
+void Game::reverse(bool color,I2 position){
     if( checkLine(color,position,I2( 0, 1)) ) reverseLine(color,position,I2( 0, 1));
     if( checkLine(color,position,I2( 1, 1)) ) reverseLine(color,position,I2( 1, 1));
     if( checkLine(color,position,I2( 1, 0)) ) reverseLine(color,position,I2( 1, 0));
@@ -214,7 +214,7 @@ void Othello::reverse(bool color,I2 position){
 
 
 /* Is there any square to place? */
-bool Othello::isAnyPutable(bool color){
+bool Game::isAnyPutable(bool color){
 	for(int x=0;x<8;x++){
 		for(int y=0;y<8;y++){
 			if( disk[x][y].isPutable(color) )return true;
@@ -224,7 +224,7 @@ bool Othello::isAnyPutable(bool color){
 }
 
 /* その方向に対してリバースできるか */
-bool Othello::checkLine(bool color,I2 r,I2 d){
+bool Game::checkLine(bool color,I2 r,I2 d){
 	if( d.x==0 && d.y==0 )return false;
 	r+=d;
 	//while(異色の石が存在 && 盤内)
@@ -236,7 +236,7 @@ bool Othello::checkLine(bool color,I2 r,I2 d){
 }
 
 /* Analyze a square which can be putable. */
-bool Othello::checkPutable(bool color,I2 position){
+bool Game::checkPutable(bool color,I2 position){
 	if( disk[position.x][position.y].isOnboard() )return false;
     if( checkLine(color,position,I2( 0, 1)) ) return true;
     if( checkLine(color,position,I2( 1, 1)) ) return true;
@@ -250,7 +250,7 @@ bool Othello::checkPutable(bool color,I2 position){
 }
 
 /* Check all square in board, and set putable value each square. */
-void Othello::ScanPutable(bool color){
+void Game::ScanPutable(bool color){
 	for(int x=0;x<8;x++){
 		for(int y=0;y<8;y++){
 			disk[x][y].setPutable(color, checkPutable(color,I2(x,y)) );
@@ -259,12 +259,12 @@ void Othello::ScanPutable(bool color){
 }
 
 /* ゲーム単位の初期設定 */
-void Othello::init(){
+void Game::init(){
 
 }
 
 /* Construct with coping all disks infomation */
-Othello::Othello( Disk disk[][8] ){
+Game::Game( Disk disk[][8] ){
 	for(int m=0;m<8;m++){
 		for(int n=0;n<8;n++){
 			this->disk[m][n]=disk[m][n];
@@ -273,7 +273,7 @@ Othello::Othello( Disk disk[][8] ){
 }
 
 /* 起動後、最初に呼び出される。*/
-Othello::Othello(){
+Game::Game(){
 	//game init
 	stat=READY;
 	player_mode[BLACK]=HUMAN;

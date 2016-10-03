@@ -24,7 +24,7 @@ enum PlayerMode{
 	ROUTERMAN,
 };
 
-class Othello : public GL{
+class Game : public GL{
 	int width,height;
 	Board board;
 	Machine *machine[2];
@@ -91,8 +91,8 @@ public:
 	bool checkPutable(bool color,I2 position);
 	bool isAnyPutable(bool color);
 	
-	Othello();
-	Othello(Disk disk[][8]);
+	Game();
+	Game(Disk disk[][8]);
 };
 
-extern Othello *othello;
+extern Game *game;

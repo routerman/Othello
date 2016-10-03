@@ -1,5 +1,5 @@
 #include "board.h"
-#include "othello.h"
+#include "game.h"
 
 void Board::button_proc(int &stat,I2 cursor){
     if( play.isPushed(cursor) ){

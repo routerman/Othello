@@ -5,25 +5,25 @@
  *      Author: routerman
  */
 
-#include "othello.h"
-Othello *othello;
+#include "game.h"
+Game *game;
 
 
 #ifdef OOP
 //static なメンバ関数しか呼び出せない
 int main(int argc, char **argv){
-	Othello *othelo = new Othello();
+	Game *othelo = new Game();
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
 
-	Othello::CreateWindow(0,800,0,600,"othello");
+	Game::CreateWindow(0,800,0,600,"othello");
 
 	glClearColor( 0 , 0.7, 0, 1);//back ground color
-	glutDisplayFunc(Othello::display);
-	glutKeyboardFunc(Othello::key);
-	glutPassiveMotionFunc(Othello::mouse);
-	glutMouseFunc(Othello::mousebotton);
-	glutTimerFunc(0,Othello::timer,100);
+	glutDisplayFunc(Game::display);
+	glutKeyboardFunc(Game::key);
+	glutPassiveMotionFunc(Game::mouse);
+	glutMouseFunc(Game::mousebotton);
+	glutTimerFunc(0,Game::timer,100);
 
 	glutMainLoop();
 	return 0;
@@ -31,24 +31,24 @@ int main(int argc, char **argv){
 
 #else
 
-void display(void){othello->display();}
+void display(void){game->display();}
 void mousebotton(int state ,int button, int cx,int cy){
-	othello->mousebotton(state,button,cx,cy);
+	game->mousebotton(state,button,cx,cy);
 }
-void mouse(int cx,int cy){othello->mouse(cx,cy);}
-void key(unsigned char k, int x, int y){othello->key(k,x,y);}
+void mouse(int cx,int cy){game->mouse(cx,cy);}
+void key(unsigned char k, int x, int y){game->key(k,x,y);}
 void timer(int dt){
-	othello->timer(dt);
+	game->timer(dt);
 	glutTimerFunc(dt,timer,10);
 }
-void reshape(GLsizei width, GLsizei height){othello->reshape(width,height);}
+void reshape(GLsizei width, GLsizei height){game->reshape(width,height);}
 
 
 int main(int argc, char **argv){
-	othello = new Othello;
+	game = new Game;
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_RGB | GLUT_DEPTH | GLUT_DOUBLE);
-	othello->CreateWindow(0,800,600,0,"othello");
+	game->CreateWindow(0,800,600,0,"othello");
 	glClearColor( 0 , 0.7, 0, 1);//back ground color
 	glutDisplayFunc(display);
 	glutReshapeFunc(reshape);
@@ -58,7 +58,7 @@ int main(int argc, char **argv){
 	glutTimerFunc(0,timer,10);
 
 	glutMainLoop();
-	delete othello;
+	delete game;
 	return 0;
 }
 #endif

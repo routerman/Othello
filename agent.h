@@ -1,6 +1,6 @@
 #pragma once
 #include "machine.h"
-#include "othello.h"
+#include "game.h"
 
 class Agent : public Machine{
 

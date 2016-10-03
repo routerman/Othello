@@ -1,5 +1,5 @@
 //hppファイルでインクルードするとC2146問題が発生する。
-#include "othello.h"
+#include "game.h"
 #include "routerman.h"
 
 /*
@@ -9,7 +9,7 @@
 bool Routerman::corner_lose(int x,int y,Disk disk[][8]){
 	//copy disk
 	I2 temp(x,y);
-	Othello *test = new Othello(disk);
+	Game *test = new Game(disk);
 	test->disk[x][y].setOnboard(true);//一時的に置いてみる。
 	test->disk[x][y].setColor(color); //自分の石
 	test->reverse(color,temp);	//ひっくり返す
