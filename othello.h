@@ -1,16 +1,29 @@
+#pragma once
 #include "disk.h"
 #include "i2.h"
 
 class Othello{
-public:
+private:
 	Disk disk[8][8];
+
+public:
+
+	void draw_disks(bool turn){
+		for(int i=0;i<8;i++){
+			for(int j=0;j<8;j++){
+				disk[i][j].draw(turn);
+			}
+		}
+	}
 
 	void put(bool color, I2 r){
 		disk[r.x][r.y].place(color);
 	}
+
 	void turn(bool color, I2 r){
 		disk[r.x][r.y].setColor(color);
 	}
+
 	bool isOnboard(I2 r){
 		return disk[r.x][r.y].isOnboard();
 	}
@@ -18,6 +31,7 @@ public:
 	bool getColor(I2 r){
 		return disk[r.x][r.y].getColor();
 	}
+
 	bool isPutable(bool color, I2 r){
 		return disk[r.x][r.y].isPutable(color);
 	}
@@ -78,13 +92,27 @@ public:
 	}
 
 	/* Check all square in board, and set putable value each square. */
-	void ScanPutable(bool color){
+	void updateDisk(bool color){
 		for(int x=0;x<8;x++){
 			for(int y=0;y<8;y++){
 				disk[x][y].setPutable(color, checkPutable(color,I2(x,y)) );
 			}
 		}
 	}
+
+	I2 judge(){
+		I2 count(0,0);
+		for(int i=0;i<8;i++){
+			for(int j=0;j<8;j++){
+				if( isOnboard(I2(i,j)) ){
+					if( getColor(I2(i,j)) == BLACK )count.x++;
+					if( getColor(I2(i,j)) == WHITE )count.y++;
+				}
+			}
+		}
+		return count;
+	}
+
 
 	/* Construct with coping all disks infomation */
 	Othello(){
@@ -99,8 +127,8 @@ public:
 		disk[4][3].place(WHITE);
 		disk[3][4].place(WHITE);
 		disk[4][4].place(BLACK);
-		ScanPutable(BLACK);
-		ScanPutable(WHITE);
+		updateDisk(BLACK);
+		updateDisk(WHITE);
 	}
 
 	Othello( Disk disk[][8] ){

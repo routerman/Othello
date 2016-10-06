@@ -28,11 +28,13 @@ public:
 		glColor3f(1-r,1-g,1-b);
 		GL::DrawString(left+10,(bottom+top)/2,label[num_label]);
 	}
+
 	void setstring(string a,string b,string c){
 		this->label[0]=a;
 		this->label[1]=b;
 		this->label[2]=c;
 	}
+
 	void set(int left,int right,int top,int bottom,float r,float g,float b){
 		this->left=left;
 		this->right=right;
@@ -42,14 +44,25 @@ public:
 		this->g=g;
 		this->b=b;
 	}
-	void selectLabel(int num){if( num>=0 && num<=2)this->num_label=num;}
+
+	void selectLabel(int num){
+		if( num>=0 && num<=2)this->num_label=num;
+	}
+
 	bool isPushed(I2 cursor){
 		if( cursor.x<left || cursor.x>right  )return false;
 		if( cursor.y<top  || cursor.y>bottom )return false;
 		return true;
 	}
-	void setActive(bool active){this->active=active;}
-	bool isActive(){return this->active;}
+
+	void setActive(bool active){
+		this->active=active;
+	}
+
+	bool isActive(){
+		return this->active;
+	}
+
 	Button(){
 		num_label=0;
 		active=false;

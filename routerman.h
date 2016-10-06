@@ -11,8 +11,7 @@
 class Routerman : public Machine{
 	int weight[8][8];
 public:
-	//そこを置くと相手に角をとられるか調べる関数
-	bool corner_lose(int x,int y,Disk s[][8]);
+	bool corner_flag(Othello tmp, I2 test);
 	void select();
 	Routerman(bool color){
 		this->color=color;
