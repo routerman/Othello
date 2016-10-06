@@ -23,7 +23,7 @@ void Game::mousebotton(int state ,int button, int cx,int cy){
 	//ボタン
 	board.button_proc(stat,cursor);
 	if( board.undo.isPushed(cursor) ){
-		undo(turn);
+		undo();
 	}else if( board.reset.isPushed(cursor) ){
 		int w = this->width;
 		int h = this->height;
@@ -76,7 +76,7 @@ void Game::Proc(){
 	//置ける場所かどうか
 	if( cursor_square.isOnboard()==false || othello->isPutable(turn,cursor_square) == false )return;
 	//置く前にUNDO用に保存する
-	save(turn);
+	save();
 	before_square[turn]=cursor_square;
 
 	//石を置く
@@ -212,8 +212,7 @@ Game::Game(){
 	num_disk[BLACK]=num_disk[WHITE]=0;
 	//Disk
     othello = new Othello();
-	save(BLACK);
-	save(WHITE);
+	save();
 	cursor_square.set(-2,-2);
 	before_square[WHITE].set(-2,-2);
 	//button

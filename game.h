@@ -6,6 +6,7 @@
 #include "button.h"
 #include "i2.h"
 #include "othello.h"
+#include <vector>
 
 enum Stat{
 	READY,
@@ -25,7 +26,10 @@ enum PlayerMode{
 };
 
 class Game : public GL{
-	int width,height;
+    int width,height;
+    Othello *othello;
+	vector<Othello> history;
+
 	Board board;
 	Machine *machine[2];
 	int stat;
@@ -43,7 +47,6 @@ class Game : public GL{
 protected:
 
 public:
-    Othello *othello;
 	void cursor_adjust(int cx,int cy){
 		//cursor_square.set(cursor.x/(60*ration)-1,cursor.y/(60*ration)-1);		
 
@@ -67,18 +70,14 @@ public:
 			glViewport( 0, 0, width, width*3/4 );
 		}
 	}
-	void save(bool turn){
-		for(int i=0;i<8;i++){
-			for(int j=0;j<8;j++){
-				this->before_disk[i][j][turn] = this->othello->disk[i][j];
-			}
-		}
+	void save(){
+		this->history.push_back(*this->othello);
 	}
-	void undo(bool turn){
-		for(int i=0;i<8;i++){
-			for(int j=0;j<8;j++){
-				othello->disk[i][j] = this->before_disk[i][j][turn];
-			}
+	void undo(){
+		if(this->history.size() > 1){
+			this->history.pop_back();
+		   *this->othello = this->history.back();
+			this->history.pop_back();
 		}
 	}
 	void Proc();
