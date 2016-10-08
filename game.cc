@@ -88,13 +88,15 @@ void Game::proc(){
 
 	before_square[turn]=cursor_square;
 
-	othello->put(turn,cursor_square);
+	othello->put_disk(turn,cursor_square);
 
-	othello->reverse(turn,cursor_square);
+	//othello->reverse(turn,cursor_square);
 
-	if(	othello->updateDisk(!turn), othello->isAnyPutable(!turn) ){
+	if(	othello->isAnyPutable(!turn) ){
 		turn = !turn;
-	}else if( othello->updateDisk(turn), othello->isAnyPutable(turn) == false ){
+	}
+
+	if( othello->isAnyPutable(turn) == false ){
 		stat=GAMEOVER;
 		result = othello->judge();
 	}
